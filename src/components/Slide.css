@@ -1,0 +1,11 @@
+.content {
+  position: relative;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.content.active {
+  opacity: 1;
+  transform: translateX(0);
+}
