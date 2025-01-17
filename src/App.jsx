@@ -1,26 +1,31 @@
 import { useState } from "react";
-import "./App.css";
-import "./ResponsiveStyle.css";
+import "./styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "./components/Navbar";
-import Index from "./components/Index";
+import Index from "./pages/Index";
 import { Routes, Route } from "react-router-dom";
-import KitchenPage from "./components/KitchenPage";
-import GalleryPage from "./components/GalleryPage";
-import EventPage from "./components/EventPage";
-import OrderPage from "./components/OrderPage";
-import LoginPage from "./components/LoginPage";
-import MenuPage from "./components/MenuPage";
-import CocktailMenuPage from "./components/CocktailMenuPage";
-import WineMenuPage from "./components/WineMenuPage";
-import GroupMenuPage from "./components/GroupMenuPage";
-import ChildrenMenuPage from "./components/ChildrenMenuPage";
-import SteakMenuPage from "./components/SteakMenuPage";
-import ReservationPage from "./ReservationPage";
-import Admin from "./Admin";
+import KitchenPage from "./pages/KitchenPage";
+import GalleryPage from "./pages/GalleryPage";
+import EventPage from "./pages/EventPage";
+import OrderPage from "./pages/OrderPage";
+import SignIn from "./Authentication/Signin";
+import SignUp from "./Authentication/Signup";
+import MenuPage from "./pages/MenuPage";
+import CocktailMenuPage from "./pages/CocktailMenuPage";
+import WineMenuPage from "./pages/WineMenuPage";
+import GroupMenuPage from "./pages/GroupMenuPage";
+import ChildrenMenuPage from "./pages/ChildrenMenuPage";
+import SteakMenuPage from "./pages/SteakMenuPage";
+import ReservationPage from "./pages/ReservationPage";
+import Admin from "./pages/Admin";
+import Spinner from "./components/Spinner";
+import SearchResults from "./components/SearchResults";
+import ResetPassword from "./Authentication/ResetPassword";
+
+import VerifyMail from "./Authentication/VerifyMail";
 
 function App() {
-  const [foodData, setFoodData] = useState(null);
+  const [foodData, setFoodData] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [clearSearch, setClearSearch] = useState("");
@@ -30,13 +35,13 @@ function App() {
     setClearSearch("");
     setIsSearching(false);
     setFoodData(null);
-    setError(null);
+    setError(false);
     console.log("Search cleared!");
   };
 
   const foodFetch = async (foodInput) => {
     setIsLoading(true);
-    setFoodData(null);
+    // setFoodData(null);
     setError(false);
     try {
       const foodDataFetch = await fetch(
@@ -44,7 +49,7 @@ function App() {
       );
       const fetchedData = await foodDataFetch.json();
       if (fetchedData.meals === null) {
-        setError(true);
+        setError("Food cannot be found. Try search another item");
         setFoodData(null);
         setIsSearching(false);
       }
@@ -71,7 +76,10 @@ function App() {
             <Route path="/Gallery" element={<GalleryPage />} />
             <Route path="/Event" element={<EventPage />} />
             <Route path="/Order" element={<OrderPage />} />
-            <Route path="/Login" element={<LoginPage />} />
+            <Route path="/Auth/Login" element={<SignIn />} />
+            <Route path="/Auth/Signup" element={<SignUp />} />
+            <Route path="/Auth/ResetPassword" element={<ResetPassword />} />
+            <Route path="/Auth/VerifyMail" element={<VerifyMail />} />
             <Route path="/Menu" element={<MenuPage />} />
             <Route path="/Cocktail-menu" element={<CocktailMenuPage />} />
             <Route path="/Wine-menu" element={<WineMenuPage />} />
@@ -84,60 +92,12 @@ function App() {
         ) : (
           // Render search results when searching
           <>
-            {isLoading && <p className="loading">Loading...</p>}
-            {error && <p className="error">Error searching for your food</p>}
-            {foodData && (
-              <>
-                <h2 className="food-heading">List of Foods:</h2>
-                <p className="food-paragraph">
-                  These are the list of foods available:
-                </p>
-                <div className="row mt-5">
-                  {foodData.map((food, index) => (
-                    <div className="col-md-4 mb-4" key={index}>
-                      <div className="card">
-                        <img
-                          src={food.strMealThumb}
-                          alt={food.strMeal}
-                          className="card-img-top foodImg"
-                        />
-                        <div className="card-body">
-                          <h5 className="card-title foodName">
-                            {food.strMeal}
-                          </h5>
-                          <p className="card-text foodArea">{food.strArea}</p>
-                          <h3 className="ingredient-heading">INGREDIENTS</h3>
-                          <div className="row ingredients">
-                            {Array.from({ length: 8 }, (_, i) => i + 1).map(
-                              (i) => {
-                                const ingredient = food[`strIngredient${i}`];
-                                if (ingredient) {
-                                  return (
-                                    <div className="col-md-6" key={i}>
-                                      <li
-                                        className="food-ingredient list-style-type-none text-start"
-                                        style={{
-                                          padding: "0px",
-                                          marginBottom: "5px",
-                                          marginTop: "2px",
-                                        }}
-                                      >
-                                        {ingredient}
-                                      </li>
-                                    </div>
-                                  );
-                                }
-                                return null;
-                              }
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </>
+            {isLoading && (
+              <p className="loading">
+                <Spinner />
+              </p>
             )}
+            <SearchResults foodData={foodData} error={error} />
           </>
         )}
       </div>

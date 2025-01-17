@@ -1,11 +1,12 @@
-import Carousel from "./Carousel";
-import FastfoodSection from "./FastfoodSection";
-import LocalsSection from "./LocalsSection";
-import Drinks from "./Drinks";
-import Ourkitchensection from "./Ourkitchensection";
-import TrustWorthinessSection from "./TrustworthinessSection";
+import Carousel from "../components/Carousel";
+import FastfoodSection from "../components/FastfoodSection";
+import LocalsSection from "../components/LocalsSection";
+import Drinks from "../components/Drinks";
+import Ourkitchensection from "../components/Ourkitchensection";
+import TrustWorthinessSection from "../components/TrustworthinessSection";
 // import OurImages from "./OurImages";
-import Footer from "./footer";
+import Footer from "../components/footer";
+import Welcome from "../components/Welcome";
 
 export default function Index() {
   return (
@@ -13,6 +14,8 @@ export default function Index() {
       <div className="container-fluid carousel-section">
         <Carousel />
       </div>
+
+      <Welcome />
       {/* Lunch list section */}
       <div className="container-fluid service-margin">
         <h3 className="text-center service-heading">Fast food</h3>
@@ -29,9 +32,9 @@ export default function Index() {
         <Ourkitchensection />
       </div>
       <div className="container-fluid our-images">{/* <OurImages /> */}</div>
-      <div className="container-fluid trustworthiness-section">
+      {/* <div className="container-fluid trustworthiness-section">
         <TrustWorthinessSection />
-      </div>
+      </div> */}
 
       <Footer />
     </>

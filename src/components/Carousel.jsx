@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function Carousel() {
   return (
     <div>
-      <div className="carousel-inner">
+      <div className="carousel-inner" style={{ paddingBottom: "100px" }}>
         <div className="carousel-item active">
           <div className="carousel-overlay"></div>
           <img

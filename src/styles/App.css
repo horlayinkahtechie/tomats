@@ -29,25 +29,15 @@ body {
   width: 100%;
   margin-left: 100px;
   margin-top: 13px;
-}
-
-.searchBarInput {
-  border-radius: 2px;
-  width: 260px;
-  height: 40px;
-  outline: none;
-  border: none;
+  display: flex;
 }
 
 .searchBarBtn {
-  font-size: 17.5px;
+  color: white;
   margin-left: 30px;
-  height: 40px;
-  width: 90px;
   border: none;
   outline: none;
-  background-color: rgb(255, 88, 28);
-  color: white;
+  background-color: black;
 }
 
 .searchBarInput::placeholder {
@@ -398,14 +388,6 @@ body {
   font-weight: 500;
   color: black;
   margin-top: 60px;
-}
-
-.error {
-  width: 300px;
-  margin: 50px auto;
-  font-size: 30px;
-  color: orangered;
-  font-weight: 500;
 }
 
 .food-heading {
@@ -897,7 +879,7 @@ select {
 
 /* Login page */
 .login-form {
-  border: 1px solid black;
+  border: 1px solid orangered;
   border-radius: 12px;
   width: 500px;
   margin: 10px auto;
@@ -933,4 +915,127 @@ select {
   background-color: white;
   text-decoration: underline;
   color: rgba(13, 110, 253, 1);
+}
+
+.error {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 60px;
+  width: 100%;
+  color: orangered;
+  font-weight: 500;
+}
+
+.welcome {
+  padding: 100px 120px 150px 120px;
+  background-color: orangered;
+  margin: 0px;
+}
+
+.welcome-heading {
+  font-size: 47px;
+  margin-bottom: 19px;
+  font-family: "Nerko One", cursive;
+  font-weight: 500;
+}
+
+.welcome-p {
+  font-size: 23px;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.welcome-btn {
+  background-color: white;
+  color: orangered;
+  padding: 20px;
+  border: none;
+  outline: none;
+  font-size: 19.8px;
+  margin-top: 17px;
+}
+
+.welcome-btn:hover {
+  background-color: rgb(219, 219, 219);
+  color: rgb(254, 105, 51);
+  transition: all 0.5s;
+}
+
+.input-container {
+  position: relative;
+  width: 100%;
+}
+
+.searchBarInput {
+  width: 100%;
+  padding: 10px 40px 10px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.clear-btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #888;
+  font-weight: 500;
+}
+
+.clear-btn {
+  color: #000;
+}
+
+.signup {
+  font-size: 30px;
+  margin-bottom: 40px;
+  color: black;
+  text-align: center;
+  color: orangered;
+}
+
+.form-parent {
+  margin: 0px auto;
+  width: 100%;
+  background-color: white;
+}
+
+.form-center {
+  margin: 40px auto;
+  padding: 60px 90px;
+  /* height: 100vh; */
+  width: 68vh;
+  height: 60vh;
+  background-color: white;
+  border: 1px solid orangered;
+  border-radius: 15px;
+}
+
+.form-input {
+  width: 400px;
+  height: 50px;
+  /* border: none; */
+  outline: none;
+  font-size: 18.5px;
+}
+
+.form-input::placeholder {
+  font-size: 18.5px;
+}
+
+.form-submit {
+  width: 190px;
+  height: 50px;
+  /* padding: 13px; */
+  font-size: 18.5px;
+  border: none;
+  outline: none;
+  background-color: orangered;
+  color: white;
+  font-weight: 500;
+  margin-bottom: 15px;
 }

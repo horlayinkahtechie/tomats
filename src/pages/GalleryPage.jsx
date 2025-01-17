@@ -2,7 +2,7 @@ import galleryImage from "../Images/galleryImg.jpg";
 import monumentImage from "../Images/monument.jpg";
 import monumentImage2 from "../Images/monument2.jpg";
 import cocktailImg from "../Images/cocktailimg.jpg";
-import Footer from "./footer";
+import Footer from "../components/footer";
 import { Link } from "react-router-dom";
 
 export default function GalleryPage() {
@@ -19,7 +19,7 @@ export default function GalleryPage() {
             loading="lazy"
           />
           <div className="gallery-caption section">
-            <div className="gallery-brand">Savour</div>
+            <div className="gallery-brand">Gallery</div>
           </div>
         </div>
       </div>
