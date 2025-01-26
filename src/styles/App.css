@@ -877,6 +877,14 @@ select {
   font-weight: 450;
 }
 
+.item-container {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 /* Login page */
 .login-form {
   border: 1px solid orangered;
@@ -1038,4 +1046,202 @@ select {
   color: white;
   font-weight: 500;
   margin-bottom: 15px;
+}
+
+/* Cart styles */
+.button-remove,
+.button-add {
+  border: none;
+  outline: none;
+  padding: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 6px;
+}
+
+.button-checkout {
+  width: 100%;
+  font-size: 19.5px;
+  font-weight: 500;
+  margin-top: 50px;
+  text-decoration: none;
+  background-color: orangered;
+  color: white;
+  border: none;
+  outline: none;
+  padding: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 6px;
+}
+
+.button-add {
+  background-color: orangered;
+  color: white;
+}
+
+.no-of-item {
+  color: black;
+  font-size: 19px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.item-availability {
+  color: grey;
+  font-size: 20px;
+  margin: 0px;
+  font-weight: 400;
+}
+
+.price {
+  color: green;
+  font-size: 20px;
+  margin: 5px 0px;
+}
+
+.item-remove {
+  border: none;
+  outline: none;
+  color: orangered;
+  background-color: white;
+  font-size: 16.5px;
+  cursor: pointer;
+}
+
+.item-name {
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.item-img {
+  border-radius: 5px;
+  margin-right: 20px;
+}
+
+.item-details {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.cart-detials {
+  display: flex;
+  gap: 20px;
+}
+
+.item-background-color {
+  background-color: white;
+  padding: 50px;
+  border-radius: 10px;
+}
+
+/* Check out page */
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ff9900;
+  padding: 10px 20px;
+  color: white;
+}
+
+.jumia-logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.nav-icons span {
+  margin: 0 5px;
+  font-size: 18px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.section {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 30px;
+}
+
+.section h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.section p {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.change-btn {
+  background-color: #ff9900;
+  color: white;
+  border: none;
+  padding: 12px 12px;
+  width: 200px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 24px;
+  font-size: 18.5px;
+}
+
+.change-btn:hover {
+  background-color: #e68a00;
+}
+
+.cart-summary {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.cart-summary h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.cart-summary h3 {
+  font-size: 22px;
+  margin: 10px 0;
+}
+
+.confirm-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.confirm-btn:hover {
+  background-color: #218838;
 }

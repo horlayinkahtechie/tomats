@@ -8,7 +8,7 @@ import KitchenPage from "./pages/KitchenPage";
 import GalleryPage from "./pages/GalleryPage";
 import EventPage from "./pages/EventPage";
 import OrderPage from "./pages/OrderPage";
-import SignIn from "./Authentication/Signin";
+import SignIn from "./Authentication/SignIn";
 import SignUp from "./Authentication/Signup";
 import MenuPage from "./pages/MenuPage";
 import CocktailMenuPage from "./pages/CocktailMenuPage";
@@ -23,6 +23,8 @@ import SearchResults from "./components/SearchResults";
 import ResetPassword from "./Authentication/ResetPassword";
 
 import VerifyMail from "./Authentication/VerifyMail";
+import Cart from "./pages/cart";
+import Checkout from "./pages/Checkout";
 
 function App() {
   const [foodData, setFoodData] = useState("");
@@ -48,6 +50,7 @@ function App() {
         `https://themealdb.com/api/json/v1/1/search.php?s=${foodInput}`
       );
       const fetchedData = await foodDataFetch.json();
+
       if (fetchedData.meals === null) {
         setError("Food cannot be found. Try search another item");
         setFoodData(null);
@@ -76,7 +79,7 @@ function App() {
             <Route path="/Gallery" element={<GalleryPage />} />
             <Route path="/Event" element={<EventPage />} />
             <Route path="/Order" element={<OrderPage />} />
-            <Route path="/Auth/Login" element={<SignIn />} />
+            <Route path="/Auth/login" element={<SignIn />} />
             <Route path="/Auth/Signup" element={<SignUp />} />
             <Route path="/Auth/ResetPassword" element={<ResetPassword />} />
             <Route path="/Auth/VerifyMail" element={<VerifyMail />} />
@@ -87,6 +90,8 @@ function App() {
             <Route path="/Children-menu" element={<ChildrenMenuPage />} />
             <Route path="/Steak-menu" element={<SteakMenuPage />} />
             <Route path="/Reservation" element={<ReservationPage />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="checkout" element={<Checkout />} />
             <Route path="/Admin" element={<Admin />} />
           </Routes>
         ) : (

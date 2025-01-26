@@ -1,4 +1,27 @@
+import { supabase } from "../supabaseClient";
+
 const SearchResults = ({ foodData, error }) => {
+  const addToCart = async (food) => {
+    try {
+      const { data, error } = await supabase.from("cart").insert([
+        {
+          meal_name: food.strMeal,
+          meal_img: food.strMealThumb,
+        },
+      ]);
+
+      if (error) {
+        console.error("Error adding to cart:", error.message);
+        alert("Failed to add to cart. Please try again.");
+      } else {
+        alert("Food added to cart successfully!");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      alert("Something went wrong!");
+    }
+  };
+
   if (error) {
     return <p className="error">Error searching for your food.</p>;
   }
@@ -20,21 +43,11 @@ const SearchResults = ({ foodData, error }) => {
               />
               <div className="card-body">
                 <h5 className="card-title foodName">{food.strMeal}</h5>
-                <p className="card-text foodArea">{food.strArea}</p>
-                <h3 className="ingredient-heading">INGREDIENTS</h3>
+
                 <div className="row ingredients">
-                  {Object.keys(food)
-                    .filter((key) => key.startsWith("strIngredient"))
-                    .map((key, i) => {
-                      const ingredient = food[key];
-                      return (
-                        ingredient && (
-                          <div className="col-md-6" key={i}>
-                            <li className="food-ingredient">{ingredient}</li>
-                          </div>
-                        )
-                      );
-                    })}
+                  <button type="button" onClick={() => addToCart(food)}>
+                    Add to cart
+                  </button>
                 </div>
               </div>
             </div>
