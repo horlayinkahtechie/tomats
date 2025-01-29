@@ -41,7 +41,7 @@ export default function MenuPage() {
   }, [selectedMenu]);
   return (
     <>
-      <div className="container">
+      <div className="container-fluid menu-select">
         <div className="col-md-12">
           <select id="food-select" onChange={handleMenuChange}>
             <option value="">Select a menu</option>
@@ -79,37 +79,41 @@ export default function MenuPage() {
           <div className="row mt-5">
             {fetchMenu.map((food, index) => (
               <div className="col-md-4 mb-4" key={index}>
-                <div className="card">
+                <div
+                  className="card border-0 shadow-sm p-3"
+                  style={{ background: "#fff", borderRadius: "12px" }}
+                >
                   <img
                     src={food.strMealThumb}
                     alt={food.strMeal}
-                    className="card-img-top foodImg"
+                    className="card-img-top rounded"
+                    style={{ height: "200px", objectFit: "cover" }}
                   />
-                  <div className="card-body">
-                    <h5 className="card-title foodName">{food.strMeal}</h5>
-                    <p className="card-text foodArea">{food.strArea}</p>
-                    <h3 className="ingredient-heading">INGREDIENTS</h3>
-                    <div className="row ingredients">
-                      {Array.from({ length: 8 }, (_, i) => i + 1).map((i) => {
-                        const ingredient = food[`strIngredient${i}`];
-                        if (ingredient) {
-                          return (
-                            <div className="col-md-6" key={i}>
-                              <li
-                                className="food-ingredient list-style-type-none text-start"
-                                style={{
-                                  padding: "0px",
-                                  marginBottom: "5px",
-                                  marginTop: "2px",
-                                }}
-                              >
-                                {ingredient}
-                              </li>
-                            </div>
-                          );
-                        }
-                        return null;
-                      })}
+                  <div className="card-body text-center">
+                    <h5 className="card-title fw-bold text-dark p-3">
+                      {food.strMeal}
+                    </h5>
+                    <p className="card-text text-muted p-2">{food.strArea}</p>
+
+                    <div className="d-flex justify-content-between mt-3">
+                      <button
+                        className="btn btn-outline-primary w-50 me-2"
+                        style={{
+                          borderRadius: "8px",
+                          padding: "8px 12px",
+                        }}
+                      >
+                        <i className="bi bi-cart-plus me-1"></i> Add to Cart
+                      </button>
+                      <button
+                        className="btn btn-outline-danger w-50"
+                        style={{
+                          borderRadius: "8px",
+                          padding: "8px 12px",
+                        }}
+                      >
+                        <i className="bi bi-heart me-1"></i> Favorite
+                      </button>
                     </div>
                   </div>
                 </div>

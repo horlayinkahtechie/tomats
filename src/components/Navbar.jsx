@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import supabase from "../supabaseClient";
-import Spinner from "./Spinner";
+// import Spinner from "./Spinner";
+import Logout from "../Authentication/Logout";
 
 function Navbar({ foodFetch, clearSearchedItem }) {
   const [FoodSearch, setFoodSearch] = useState("");
   const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [cartItemCount, setCartItemCount] = useState(null);
 
   const foodSearchFunction = (e) => {
     const inputValue = e.target.value;
@@ -21,25 +22,21 @@ function Navbar({ foodFetch, clearSearchedItem }) {
 
   useEffect(() => {
     const fetchCartItems = async () => {
-      setLoading(true);
       try {
         const { data, error } = await supabase.from("cart").select("*");
         if (error) {
           console.error("Error fetching cart items:", error.message);
         } else {
-          console.log("Cart items fetched successfully:", data);
+          setCartItemCount(data.length);
           setCartItems(data || []);
         }
       } catch (err) {
-        setLoading(false);
         console.error("Unexpected error:", err);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchCartItems();
-  }, []);
+  }, [cartItems]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -78,8 +75,13 @@ function Navbar({ foodFetch, clearSearchedItem }) {
                 onClick={clearSearchedItem}
                 to="/About"
               >
-                About
+                About us
               </Link>
+            </li>
+            <li className="nav-item">
+              <button className="nav-link text-white" onClick={Logout}>
+                Log out
+              </button>
             </li>
             <li className="nav-item">
               <Link
@@ -94,9 +96,9 @@ function Navbar({ foodFetch, clearSearchedItem }) {
               <Link
                 className="nav-link text-white"
                 onClick={clearSearchedItem}
-                to="/Order"
+                to="/Menu"
               >
-                Order
+                Menu
               </Link>
             </li>
             <li className="nav-item">
@@ -118,7 +120,7 @@ function Navbar({ foodFetch, clearSearchedItem }) {
                     fill="currentColor"
                     className="bi bi-cart3"
                     viewBox="0 0 16 16"
-                    style={{ fontWeight: "700", color: "black" }}
+                    style={{ fontWeight: "700", color: "white" }}
                   >
                     <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
                   </svg>
@@ -126,7 +128,7 @@ function Navbar({ foodFetch, clearSearchedItem }) {
                     className="position-absolute top-0 start-100 translate-middle badge rounded-pill"
                     style={{ backgroundColor: "orangered" }}
                   >
-                    {loading ? <Spinner /> : cartItems.length}
+                    {cartItemCount}
                     <span className="visually-hidden">unread messages</span>
                   </span>
                 </button>

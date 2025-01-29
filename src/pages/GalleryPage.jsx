@@ -24,8 +24,11 @@ export default function GalleryPage() {
         </div>
       </div>
 
-      <div className="container mb-5 section-margin">
-        <div className="row">
+      <div className="container-fluid mb-5 section-margin">
+        <div
+          className="row"
+          style={{ paddingLeft: "120px", paddingRight: "120px" }}
+        >
           <div className="col-md-6 monument-margin">
             <h3 className="monument-heading">A MONUMENT</h3>
             <p className="monument-p">
@@ -53,7 +56,7 @@ export default function GalleryPage() {
               <Link className="menuBtn" to="/Menu">
                 VIEW MENU
               </Link>
-              <Link className="reservationBtn" to="/Reservation">
+              <Link className="reservationBtn mt-4" to="/Reservation">
                 MAKE A RESERVATION
               </Link>
             </div>

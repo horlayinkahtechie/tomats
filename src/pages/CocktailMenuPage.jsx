@@ -2,6 +2,7 @@ import cocktailImg from "../Images/cocktailimg.jpg";
 import margaritaImg from "../Images/margaritaImg.webp";
 import mojitoImg from "../Images/mojitoImg.webp";
 import martiniImg from "../Images/martiniImg.jpg";
+import Footer from "../components/footer";
 
 export default function CocktailMenuPage() {
   return (
@@ -122,6 +123,7 @@ export default function CocktailMenuPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

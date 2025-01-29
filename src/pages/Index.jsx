@@ -3,8 +3,7 @@ import FastfoodSection from "../components/FastfoodSection";
 import LocalsSection from "../components/LocalsSection";
 import Drinks from "../components/Drinks";
 import Ourkitchensection from "../components/Ourkitchensection";
-import TrustWorthinessSection from "../components/TrustworthinessSection";
-// import OurImages from "./OurImages";
+
 import Footer from "../components/footer";
 import Welcome from "../components/Welcome";
 

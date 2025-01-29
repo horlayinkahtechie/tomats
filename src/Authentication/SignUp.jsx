@@ -1,7 +1,6 @@
 import { useState } from "react";
-import supabase from "../supabaseClient";
 import { Link, useNavigate } from "react-router-dom";
-// import Navbar from "../components/Navbar";
+import supabase from "../supabaseClient";
 import Footer from "../components/footer";
 
 const SignUp = () => {
@@ -17,7 +16,6 @@ const SignUp = () => {
     setIsLoading(true);
     setSignUpErrorMessage("");
 
-    // Validation
     if (!email.includes("@")) {
       setSignUpErrorMessage("Please enter a valid email address.");
       setIsLoading(false);
@@ -31,19 +29,14 @@ const SignUp = () => {
     }
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-          data: {
-            username,
-          },
-        },
+        options: { data: { username } },
       });
 
       if (error) throw new Error(error.message);
 
-      // Success - Redirect to verify page
       navigate("/Auth/VerifyMail");
     } catch (error) {
       setSignUpErrorMessage(
@@ -56,72 +49,113 @@ const SignUp = () => {
 
   return (
     <>
-      <div className="container-fluid mt-5 form-parent">
-        <div className="row">
-          <div className="col-md-12 form-center">
-            <h1 className="signup">Sign Up</h1>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSignUp();
-              }}
-            >
-              <div>
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div
+          className="card shadow-lg p-4"
+          style={{
+            width: "100%",
+            maxWidth: "500px",
+            height: "60vh",
+            borderRadius: "12px",
+          }}
+        >
+          <h2
+            className="text-center mb-4"
+            style={{ fontWeight: "600", color: "#333", paddingTop: "30px" }}
+          >
+            Sign Up
+          </h2>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSignUp();
+            }}
+          >
+            <div className="mb-3">
+              <label className="form-label">Username</label>
+              <div className="input-group">
+                <span className="input-group-text">
+                  <i className="bi bi-person"></i>
+                </span>
                 <input
-                  className="form-input form-control"
-                  placeholder="Username"
+                  className="form-control"
+                  placeholder="Enter username"
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
                 />
               </div>
-              <div>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <div className="input-group">
+                <span className="input-group-text">
+                  <i className="bi bi-envelope"></i>
+                </span>
                 <input
-                  className="form-input form-control"
-                  placeholder="Email"
+                  className="form-control"
+                  placeholder="Enter email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
-              <div>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Password</label>
+              <div className="input-group">
                 <input
-                  className="form-input form-control"
+                  className="form-control"
                   type="password"
-                  placeholder="Your password"
+                  placeholder="Enter password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                <span className="input-group-text">
+                  <i className="bi bi-lock"></i>
+                </span>
               </div>
-              <button
-                type="submit"
-                className="form-submit"
-                disabled={isLoading}
-              >
-                {isLoading ? "Signing Up..." : "Sign Up"}
-              </button>
-            </form>
+            </div>
 
-            <p className="account-status">
-              Already have an account? <Link to="/Auth/Login">Sign In</Link>
-            </p>
+            <button
+              type="submit"
+              className="btn btn-primary w-100"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2"></span>
+                  Signing Up...
+                </>
+              ) : (
+                "Sign Up"
+              )}
+            </button>
+          </form>
 
-            {signUpErrorMessage && (
-              <p style={{ color: "red" }}>{signUpErrorMessage}</p>
-            )}
-            {isLoading && (
-              <div className="d-flex justify-content-center">
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              </div>
-            )}
-          </div>
+          {signUpErrorMessage && (
+            <p className="text-danger text-center mt-3">{signUpErrorMessage}</p>
+          )}
+
+          <p className="text-center mt-3">
+            Already have an account?{" "}
+            <Link
+              to="/Auth/Login"
+              className="text-decoration-none"
+              style={{ color: "#007bff" }}
+            >
+              Sign In
+            </Link>
+          </p>
         </div>
       </div>
+
       <Footer />
     </>
   );

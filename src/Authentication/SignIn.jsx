@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { supabase } from "../supabaseClient";
+import { Link } from "react-router-dom";
 import Footer from "../components/footer";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import supabase from "../supabaseClient";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -9,7 +10,6 @@ const SignIn = () => {
   const [signInErrorMessage, setSignInErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // Use navigate as a function
   const navigate = useNavigate();
 
   const handleSignIn = async () => {
@@ -56,69 +56,103 @@ const SignIn = () => {
 
   return (
     <>
-      <div className="container-fluid">
-        <div className="row">
-          <div
-            className="col-md-6"
-            style={{
-              margin: "0px auto",
-              padding: "180px 180px",
-              backgroundColor: "rgb(244, 244, 244)",
-              height: "100vh",
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div
+          className="card shadow-lg p-4"
+          style={{
+            width: "100%",
+            maxWidth: "500px",
+            height: "60vh",
+            borderRadius: "12px",
+          }}
+        >
+          <h2
+            className="text-center mb-4"
+            style={{ fontWeight: "600", color: "#333", paddingTop: "30px" }}
+          >
+            Sign In
+          </h2>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSignIn();
             }}
           >
-            <h1 className="signin">Sign In</h1>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSignIn();
-              }}
-              className="form-width"
-            >
-              <div>
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <div className="input-group">
+                <span className="input-group-text">
+                  <i className="bi bi-envelope">@</i>
+                </span>
                 <input
-                  className="form-input form-control"
-                  placeholder="Email"
+                  className="form-control"
                   type="email"
+                  placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
-              <div>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Password</label>
+              <div className="input-group">
                 <input
-                  className="form-input form-control"
+                  className="form-control"
                   type="password"
-                  placeholder="Your password"
+                  placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                <span className="input-group-text">
+                  <i className="bi bi-lock"></i>
+                </span>
               </div>
-              <p className="text-end">
-                Forgot password?{" "}
-                <Link to="/Auth/ResetPassword">Reset here</Link>
-              </p>
-              <button type="submit" className="form-submit">
-                Sign In
-              </button>
-            </form>
+            </div>
 
-            <p className="account-status">
-              Don&apos;t have an account? <Link to="/Auth/Signup">Sign up</Link>
+            <p className="text-end">
+              <Link
+                to="/Auth/ResetPassword"
+                className="text-decoration-none"
+                style={{ color: "#007bff" }}
+              >
+                Forgot password?
+              </Link>
             </p>
 
-            {signInErrorMessage && (
-              <p style={{ color: "red" }}>{signInErrorMessage}</p>
-            )}
-            {isLoading && (
-              <div className="d-flex justify-content-center">
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              </div>
-            )}
-          </div>
+            <button
+              type="submit"
+              className="btn btn-primary w-100"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2"></span>
+                  Signing in...
+                </>
+              ) : (
+                "Sign In"
+              )}
+            </button>
+          </form>
+
+          {signInErrorMessage && (
+            <p className="text-danger text-center mt-3">{signInErrorMessage}</p>
+          )}
+
+          <p className="text-center mt-3">
+            Don&apos;t have an account?{" "}
+            <Link
+              to="/Auth/Signup"
+              className="text-decoration-none"
+              style={{ color: "#007bff" }}
+            >
+              Sign up
+            </Link>
+          </p>
         </div>
       </div>
       <Footer />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "./components/Navbar";
@@ -8,7 +8,7 @@ import KitchenPage from "./pages/KitchenPage";
 import GalleryPage from "./pages/GalleryPage";
 import EventPage from "./pages/EventPage";
 import OrderPage from "./pages/OrderPage";
-import SignIn from "./Authentication/SignIn";
+import SignIn from "./Authentication/Signin";
 import SignUp from "./Authentication/Signup";
 import MenuPage from "./pages/MenuPage";
 import CocktailMenuPage from "./pages/CocktailMenuPage";
@@ -22,9 +22,12 @@ import Spinner from "./components/Spinner";
 import SearchResults from "./components/SearchResults";
 import ResetPassword from "./Authentication/ResetPassword";
 
+import supabase from "./supabaseClient";
+
 import VerifyMail from "./Authentication/VerifyMail";
 import Cart from "./pages/cart";
 import Checkout from "./pages/Checkout";
+import ProtectedRoute from "./protectedRoute/ProtectedRoute";
 
 function App() {
   const [foodData, setFoodData] = useState("");
@@ -32,6 +35,41 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [clearSearch, setClearSearch] = useState("");
   const [error, setError] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchSession() {
+      const { data: session } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+      setLoading(false);
+    }
+
+    fetchSession();
+
+    const { data: subscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user || null);
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center"
+        style={{ marginTop: "200px" }}
+      >
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   const clearSearchedItem = () => {
     setClearSearch("");
@@ -43,7 +81,6 @@ function App() {
 
   const foodFetch = async (foodInput) => {
     setIsLoading(true);
-    // setFoodData(null);
     setError(false);
     try {
       const foodDataFetch = await fetch(
@@ -52,14 +89,22 @@ function App() {
       const fetchedData = await foodDataFetch.json();
 
       if (fetchedData.meals === null) {
-        setError("Food cannot be found. Try search another item");
+        setError("Food cannot be found. Try searching another item");
         setFoodData(null);
         setIsSearching(false);
+        return;
       }
-      setFoodData(fetchedData.meals);
+
+      // Add random prices between $10 and $50
+      const enhancedData = fetchedData.meals.map((meal) => ({
+        ...meal,
+        price: Math.floor(Math.random() * (50 - 10 + 1)) + 10,
+      }));
+
+      setFoodData(enhancedData);
       setIsSearching(true);
       setError(false);
-      console.log(fetchedData);
+      console.log(enhancedData);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -89,10 +134,39 @@ function App() {
             <Route path="/Group-menu" element={<GroupMenuPage />} />
             <Route path="/Children-menu" element={<ChildrenMenuPage />} />
             <Route path="/Steak-menu" element={<SteakMenuPage />} />
-            <Route path="/Reservation" element={<ReservationPage />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="checkout" element={<Checkout />} />
-            <Route path="/Admin" element={<Admin />} />
+
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute user={user}>
+                  <Cart />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/checkout"
+              element={
+                <ProtectedRoute user={user}>
+                  <Checkout />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/Reservation"
+              element={
+                <ProtectedRoute user={user}>
+                  <ReservationPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/Admin"
+              element={
+                <ProtectedRoute user={user}>
+                  <Admin />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         ) : (
           // Render search results when searching
