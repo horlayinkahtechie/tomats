@@ -9,7 +9,6 @@ const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    // Calculate total price whenever cartItems change
     const total = cartItems.reduce(
       (sum, item) => sum + item.price * item.quantity,
       0
@@ -19,16 +18,26 @@ const Cart = () => {
 
   useEffect(() => {
     const fetchCartItems = async () => {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+      if (userError || !userData?.user) {
+        setCartItems([]);
+        return;
+      }
+
       setLoading(true);
       try {
-        const { data, error } = await supabase.from("cart").select("*");
+        const { data, error } = await supabase
+          .from("cart")
+          .select("*")
+          .eq("user_id", userData.user.id);
+
         if (error) {
           console.error("Error fetching cart items:", error.message);
         } else {
-          // Initialize quantity for each item
           const itemsWithQuantity = data.map((item) => ({
             ...item,
-            quantity: 1, // Default quantity
+            quantity: 1,
           }));
           setCartItems(itemsWithQuantity || []);
         }
@@ -53,6 +62,39 @@ const Cart = () => {
           : item
       )
     );
+  };
+
+  const addItemQuantityToItemDetails = async () => {
+    const { data: user, error: userError } = await supabase.auth.getUser();
+    if (userError || !user?.user) {
+      console.error("No user logged in:", userError);
+      return;
+    }
+
+    const totalQuantity = cartItems.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+
+    try {
+      const { error } = await supabase.from("item_details").insert([
+        {
+          item_quantity: totalQuantity, // Insert only the total quantity
+          user_id: user.user.id,
+          email: user.user.email,
+          username: user.user.user_metadata?.username || "Unknown",
+          price: totalPrice,
+        },
+      ]);
+
+      if (error) {
+        console.error("Error adding to cart:", error.message);
+      } else {
+        console.log("Item added successfully");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+    }
   };
 
   const removeItem = async (id) => {
@@ -239,6 +281,7 @@ const Cart = () => {
 
                   <div className="mt-5">
                     <Link
+                      onClick={addItemQuantityToItemDetails}
                       to="/checkout"
                       className="button-checkout text-center"
                     >

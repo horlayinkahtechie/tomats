@@ -7,9 +7,17 @@ const SearchResults = ({ foodData, error }) => {
   const addToCart = async (food, index) => {
     setLoadingItems((prev) => ({ ...prev, [index]: true }));
 
+    const { data: user, error: userError } = await supabase.auth.getUser();
+    if (userError || !user?.user) {
+      console.error("No user logged in:", userError);
+      setLoadingItems((prev) => ({ ...prev, [index]: false }));
+      return;
+    }
+
     try {
       const { error } = await supabase.from("cart").insert([
         {
+          user_id: user.user.id,
           meal_name: food.strMeal,
           meal_img: food.strMealThumb,
           price: food.price || 50,
@@ -17,7 +25,7 @@ const SearchResults = ({ foodData, error }) => {
       ]);
 
       if (error) {
-        console.error("Error adding to cart:");
+        console.error("Error adding to cart");
       } else {
         console.log("Item added successfully");
       }

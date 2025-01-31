@@ -6,7 +6,6 @@ const Logout = async () => {
     if (error) {
       console.error("Logout Error:", error.message);
     } else {
-      console.log("Successfully logged out.");
       // Redirect to login page or homepage after logout
       window.location.href = "/";
     }

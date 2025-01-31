@@ -114,6 +114,7 @@ const CustomerAddressSection = ({ title }) => {
                   <input
                     type="radio"
                     name="selectedAddress"
+                    required
                     value={item.id}
                     onChange={() => setSelectedAddress(item)}
                     checked={selectedAddress?.id === item.id}

@@ -22,13 +22,28 @@ function Navbar({ foodFetch, clearSearchedItem }) {
 
   useEffect(() => {
     const fetchCartItems = async () => {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+      if (userError || !userData?.user) {
+        setCartItems([]);
+        return;
+      }
+
       try {
-        const { data, error } = await supabase.from("cart").select("*");
+        const { data, error } = await supabase
+          .from("cart")
+          .select("*")
+          .eq("user_id", userData.user.id);
+
         if (error) {
           console.error("Error fetching cart items:", error.message);
         } else {
+          const itemsWithQuantity = data.map((item) => ({
+            ...item,
+            quantity: 1,
+          }));
           setCartItemCount(data.length);
-          setCartItems(data || []);
+          setCartItems(itemsWithQuantity || []);
         }
       } catch (err) {
         console.error("Unexpected error:", err);
@@ -37,6 +52,30 @@ function Navbar({ foodFetch, clearSearchedItem }) {
 
     fetchCartItems();
   }, [cartItems]);
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data?.user) {
+        setUser(data.user);
+      } else {
+        setUser(null);
+      }
+    };
+
+    getUser();
+
+    // Listen for auth state changes (e.g., login/logout)
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user || null);
+      }
+    );
+
+    return () => authListener.subscription.unsubscribe();
+  }, []);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -79,11 +118,6 @@ function Navbar({ foodFetch, clearSearchedItem }) {
               </Link>
             </li>
             <li className="nav-item">
-              <button className="nav-link text-white" onClick={Logout}>
-                Log out
-              </button>
-            </li>
-            <li className="nav-item">
               <Link
                 className="nav-link text-white"
                 onClick={clearSearchedItem}
@@ -102,13 +136,19 @@ function Navbar({ foodFetch, clearSearchedItem }) {
               </Link>
             </li>
             <li className="nav-item">
-              <Link
-                className="nav-link text-white"
-                onClick={clearSearchedItem}
-                to="/Auth/login"
-              >
-                Login
-              </Link>
+              {user ? (
+                <button className="nav-link text-white" onClick={Logout}>
+                  Log out
+                </button>
+              ) : (
+                <Link
+                  className="nav-link text-white"
+                  onClick={clearSearchedItem}
+                  to="/Auth/login"
+                >
+                  Log in
+                </Link>
+              )}
             </li>
             <li className="nav-item">
               <Link className="nav-link text-white" to="/cart">

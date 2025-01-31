@@ -6,15 +6,49 @@ import steakMenu from "../Images/steakImg.jpg";
 import Footer from "../components/footer";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import supabase from "../supabaseClient";
 
 export default function MenuPage() {
   const [selectedMenu, setSelectedMenu] = useState("");
   const [fetchMenu, setFetchMenu] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingItems, setLoadingItems] = useState(false);
 
   const handleMenuChange = (e) => {
     const selectedValue = e.target.value;
     setSelectedMenu(selectedValue);
+  };
+
+  const addToCart = async (food, index) => {
+    setLoadingItems((prev) => ({ ...prev, [index]: true }));
+
+    const { data: user, error: userError } = await supabase.auth.getUser();
+    if (userError || !user?.user) {
+      console.error("No user logged in:", userError);
+      setLoadingItems((prev) => ({ ...prev, [index]: false }));
+      return;
+    }
+
+    try {
+      const { error } = await supabase.from("cart").insert([
+        {
+          user_id: user.user.id,
+          meal_name: food.strMeal,
+          meal_img: food.strMealThumb,
+          price: food.price || 50,
+        },
+      ]);
+
+      if (error) {
+        console.error("Error adding to cart");
+      } else {
+        console.log("Item added successfully");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+    } finally {
+      setLoadingItems((prev) => ({ ...prev, [index]: false }));
+    }
   };
 
   useEffect(() => {
@@ -102,8 +136,11 @@ export default function MenuPage() {
                           borderRadius: "8px",
                           padding: "8px 12px",
                         }}
+                        onClick={() => addToCart(food, index)}
+                        disabled={loadingItems[index]}
                       >
-                        <i className="bi bi-cart-plus me-1"></i> Add to Cart
+                        <i className="bi bi-cart-plus me-1"></i>{" "}
+                        {loadingItems[index] ? "Adding..." : "Add to Cart"}
                       </button>
                       <button
                         className="btn btn-outline-danger w-50"
