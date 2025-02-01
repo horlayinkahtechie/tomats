@@ -1,4 +1,6 @@
 import fruitImg3 from "../Images/localfoodImg.jpg";
+import { Link } from "react-router-dom";
+
 function LocalsSection() {
   return (
     <div className="row explore-locals">
@@ -9,9 +11,10 @@ function LocalsSection() {
           authentic ingredients and traditional recipes. Experience the taste of
           home with every bite.
         </p>
-        <button type="button" className="order-btn">
+
+        <Link className="order-btn" to="/menu">
           Order now
-        </button>
+        </Link>
       </div>
       <div className="col-md-6 mt-4">
         <img src={fruitImg3} className="img-fluid" alt="Local food" />

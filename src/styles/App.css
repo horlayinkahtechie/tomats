@@ -106,11 +106,15 @@ body {
 .order-btn {
   background-color: orangered;
   color: white;
-  padding: 15px;
+  padding: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
   border: none;
   outline: none;
   font-size: 19.8px;
-  margin-top: 17px;
+  margin-top: 45px;
+  text-decoration: none;
+  /* width: 120px; */
 }
 
 /* Offer styles */
@@ -203,6 +207,7 @@ body {
 .locals-p {
   font-size: 30px;
   color: white;
+  margin-bottom: 50px;
 }
 
 .order-btn {
@@ -218,12 +223,15 @@ body {
 .drinks-order-btn {
   background-color: black;
   color: white;
-  padding: 15px;
+  padding: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
   border: none;
   outline: none;
   font-size: 19.8px;
-  margin-top: 17px;
-  width: 150px;
+  margin-top: 45px;
+  text-decoration: none;
+  /* width: 120px; */
 }
 
 /* Our kitchen styles */

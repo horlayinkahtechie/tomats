@@ -13,6 +13,7 @@ export default function MenuPage() {
   const [fetchMenu, setFetchMenu] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingItems, setLoadingItems] = useState(false);
+  const [notification, setNotification] = useState({ message: "", type: "" });
 
   const handleMenuChange = (e) => {
     const selectedValue = e.target.value;
@@ -25,6 +26,7 @@ export default function MenuPage() {
     const { data: user, error: userError } = await supabase.auth.getUser();
     if (userError || !user?.user) {
       console.error("No user logged in:", userError);
+      showNotification("You need to log in first!", "error");
       setLoadingItems((prev) => ({ ...prev, [index]: false }));
       return;
     }
@@ -41,14 +43,23 @@ export default function MenuPage() {
 
       if (error) {
         console.error("Error adding to cart");
+        showNotification("Failed to add item to cart!", "error");
       } else {
-        console.log("Item added successfully");
+        showNotification("Item added successfully!", "success");
       }
     } catch (err) {
       console.error("Unexpected error:", err);
+      showNotification("An unexpected error occurred!", "error");
     } finally {
       setLoadingItems((prev) => ({ ...prev, [index]: false }));
     }
+  };
+
+  const showNotification = (message, type) => {
+    setNotification({ message, type });
+    setTimeout(() => {
+      setNotification({ message: "", type: "" });
+    }, 3000); // Hide notification after 3 seconds
   };
 
   useEffect(() => {
@@ -75,6 +86,12 @@ export default function MenuPage() {
   }, [selectedMenu]);
   return (
     <>
+      {notification.message && (
+        <div className={`notification ${notification.type}`}>
+          {notification.message}
+        </div>
+      )}
+
       <div className="container-fluid menu-select">
         <div className="col-md-12">
           <select id="food-select" onChange={handleMenuChange}>
@@ -299,6 +316,45 @@ export default function MenuPage() {
       )}
 
       <Footer />
+      <style>
+        {`
+          .notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 15px;
+            background: #28a745;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+            transform: translateX(100%);
+            animation: slideIn 0.5s forwards, slideOut 0.5s 2.5s forwards;
+          }
+
+          .notification.error {
+            background: #dc3545;
+          }
+
+          @keyframes slideIn {
+            from {
+              transform: translateX(100%);
+            }
+            to {
+              transform: translateX(0);
+            }
+          }
+
+          @keyframes slideOut {
+            from {
+              transform: translateX(0);
+            }
+            to {
+              transform: translateX(100%);
+            }
+          }
+        `}
+      </style>
     </>
   );
 }

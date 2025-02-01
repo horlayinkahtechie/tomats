@@ -71,7 +71,7 @@ export default function ReservationPage() {
 
   return (
     <>
-      <div className="container">
+      <div className="container-fluid p-5">
         <div className="row">
           <div className="col-md-3 mt-5">
             <label className="selectLabel">
@@ -329,7 +329,7 @@ export default function ReservationPage() {
             />
           </div>
         </div>
-        <div className="container result-display">
+        <div className="container-fluid p-5 result-display">
           <div className="row">
             <div className="col-md-3">
               <p className="selected-result">

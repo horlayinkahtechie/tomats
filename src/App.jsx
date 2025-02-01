@@ -87,6 +87,7 @@ function App() {
         `https://themealdb.com/api/json/v1/1/search.php?s=${foodInput}`
       );
       const fetchedData = await foodDataFetch.json();
+      console.log(fetchedData);
 
       if (fetchedData.meals === null) {
         setError("Food cannot be found. Try searching another item");

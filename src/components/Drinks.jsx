@@ -1,4 +1,5 @@
 import fruitImg3 from "../Images/drinksImg.jpg";
+import { Link } from "react-router-dom";
 function Drinks() {
   return (
     <div className="row">
@@ -16,9 +17,10 @@ function Drinks() {
           Enjoy a variety of refreshing beverages, from soft drinks and juices
           to specialty cocktails and wines, perfectly paired with your meal.
         </p>
-        <button type="button" className="drinks-order-btn">
+
+        <Link className="drinks-order-btn" to="/Menu">
           Order now
-        </button>
+        </Link>
       </div>
     </div>
   );

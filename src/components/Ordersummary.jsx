@@ -10,14 +10,28 @@ const Ordersummary = ({ deliveryFees }) => {
   // Fetch cart items and calculate totals
   useEffect(() => {
     const fetchCartItems = async () => {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+      if (userError || !userData?.user) {
+        setCartItems([]);
+        return;
+      }
+
       setLoading(true);
       try {
-        const { data, error } = await supabase.from("cart").select("*");
+        const { data, error } = await supabase
+          .from("cart")
+          .select("*")
+          .eq("user_id", userData.user.id);
+
         if (error) {
           console.error("Error fetching cart items:", error.message);
         } else {
-          console.log("Cart items fetched successfully:", data);
-          setCartItems(data || []);
+          const itemsWithQuantity = data.map((item) => ({
+            ...item,
+            quantity: 1,
+          }));
+          setCartItems(itemsWithQuantity || []);
         }
       } catch (err) {
         console.error("Unexpected error:", err);

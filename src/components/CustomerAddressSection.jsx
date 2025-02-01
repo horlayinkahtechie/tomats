@@ -18,10 +18,18 @@ const CustomerAddressSection = ({ title }) => {
   useEffect(() => {
     const fetchCustomerAddresses = async () => {
       setLoading(true);
+      const { data: user, error: userError } = await supabase.auth.getUser();
+      if (userError || !user?.user) {
+        console.error("No user logged in:", userError);
+        setLoading(false);
+        return;
+      }
+
       try {
         const { data, error } = await supabase
           .from("address_details")
-          .select("*");
+          .select("*")
+          .eq("user_id", user.user.id);
 
         if (error) {
           console.error("Error fetching your addresses:", error.message);
@@ -39,27 +47,42 @@ const CustomerAddressSection = ({ title }) => {
     fetchCustomerAddresses();
   }, []);
 
+  // Insert users Address
   const insertCustomersAddress = async (e) => {
     e.preventDefault();
+
+    const { data: user, error: userError } = await supabase.auth.getUser();
+    if (userError || !user?.user) {
+      console.error("No user logged in:", userError);
+      return;
+    }
+
     try {
       setLoading(true);
       const { error } = await supabase.from("address_details").insert([
         {
           address: customersAddress,
           phone_no: customersPhoneNo,
+          user_id: user.user.id,
+          email: user.user.email,
         },
       ]);
 
       if (error) {
-        console.error("Error updating address:", error.message);
+        console.error("Error inserting address:", error.message);
       } else {
-        setMessage("Address updated");
-        console.log("Address and phone no updated successfully!");
-        // Refresh data
+        setMessage("Address added successfully!");
+        console.log("Address inserted successfully!");
+
+        // Refresh UI with the new address
         setFetchedData((prevData) => [
           ...prevData,
           { address: customersAddress, phone_no: customersPhoneNo },
         ]);
+
+        // Clear inputs
+        setCustomersAddress("");
+        setCustomersPhoneNo("");
       }
     } catch (err) {
       console.error("Unexpected error:", err);
@@ -68,6 +91,7 @@ const CustomerAddressSection = ({ title }) => {
     }
   };
 
+  // Delete address function
   const deleteAddress = async (id) => {
     try {
       setLoading(true);
@@ -77,7 +101,7 @@ const CustomerAddressSection = ({ title }) => {
         .eq("id", id);
 
       if (error) {
-        console.error("Error deleting item:", error.message);
+        console.error("Error deleting address:", error.message);
       } else {
         console.log(`Address with id ${id} removed from address_details table`);
         setFetchedData((prevData) => prevData.filter((item) => item.id !== id));

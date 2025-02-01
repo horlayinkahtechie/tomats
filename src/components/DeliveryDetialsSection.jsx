@@ -13,10 +13,20 @@ const DeliveryDetailsSection = ({ title, buttonText }) => {
       return;
     }
     setLoading(true);
+    const { data: user, error: userError } = await supabase.auth.getUser();
+    if (userError || !user?.user) {
+      console.error("No user logged in:", userError);
+      return;
+    }
+
     try {
-      const { error } = await supabase
-        .from("delivery_options")
-        .insert([{ delivery_options: selectDeliveryDetails }]);
+      const { error } = await supabase.from("delivery_options").insert([
+        {
+          delivery_options: selectDeliveryDetails,
+          email: user.user.email,
+          user_id: user.user.id,
+        },
+      ]);
 
       if (error) throw error;
 
