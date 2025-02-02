@@ -23,7 +23,7 @@ import SearchResults from "./components/SearchResults";
 import ResetPassword from "./components/Authentication/ResetPassword";
 import supabase from "./supabaseClient";
 import VerifyMail from "./components/Authentication/VerifyMail";
-import Cart from "./pages/cart";
+import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import ProtectedRoute from "./protectedRoute/ProtectedRoute";
 
