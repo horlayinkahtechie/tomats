@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Footer from "../components/footer";
+import Footer from "../footer";
 import { useNavigate } from "react-router-dom";
-import supabase from "../supabaseClient";
+import supabase from "../../supabaseClient";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
