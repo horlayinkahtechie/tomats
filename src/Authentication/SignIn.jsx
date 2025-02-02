@@ -4,7 +4,7 @@ import Footer from "../components/footer";
 import { useNavigate } from "react-router-dom";
 import supabase from "../supabaseClient";
 
-const SignIn = () => {
+const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signInErrorMessage, setSignInErrorMessage] = useState("");
@@ -160,4 +160,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Signin;

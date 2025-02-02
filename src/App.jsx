@@ -8,8 +8,8 @@ import KitchenPage from "./pages/KitchenPage";
 import GalleryPage from "./pages/GalleryPage";
 import EventPage from "./pages/EventPage";
 import OrderPage from "./pages/OrderPage";
-import SignIn from "./Authentication/Signin";
-import SignUp from "./Authentication/Signup";
+import Signin from "./Authentication/Signin";
+import Signup from "./Authentication/Signup";
 import MenuPage from "./pages/MenuPage";
 import CocktailMenuPage from "./pages/CocktailMenuPage";
 import WineMenuPage from "./pages/WineMenuPage";
@@ -122,8 +122,8 @@ function App() {
             <Route path="/Gallery" element={<GalleryPage />} />
             <Route path="/Event" element={<EventPage />} />
             <Route path="/Order" element={<OrderPage />} />
-            <Route path="/Auth/login" element={<SignIn />} />
-            <Route path="/Auth/Signup" element={<SignUp />} />
+            <Route path="/Auth/login" element={<Signin />} />
+            <Route path="/Auth/Signup" element={<Signup />} />
             <Route path="/Auth/ResetPassword" element={<ResetPassword />} />
             <Route path="/Auth/VerifyMail" element={<VerifyMail />} />
             <Route path="/Menu" element={<MenuPage />} />

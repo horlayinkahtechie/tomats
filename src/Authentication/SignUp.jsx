@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import supabase from "../supabaseClient";
 import Footer from "../components/footer";
 
-const SignUp = () => {
+const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -161,4 +161,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Signup;
