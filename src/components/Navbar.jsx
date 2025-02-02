@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import supabase from "../supabaseClient";
 // import Spinner from "./Spinner";
-import Logout from "../Authentication/Logout";
+import Logout from "../authentication/Logout";
 
 function Navbar({ foodFetch, clearSearchedItem }) {
   const [FoodSearch, setFoodSearch] = useState("");
