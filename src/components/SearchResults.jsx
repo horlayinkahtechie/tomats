@@ -2,7 +2,7 @@ import { supabase } from "../supabaseClient";
 import { useState } from "react";
 import Footer from "./footer";
 
-const SearchResults = ({ foodData, error }) => {
+const SearchResults = ({ foodData }) => {
   const [loadingItems, setLoadingItems] = useState({});
   const [notification, setNotification] = useState({ message: "", type: "" });
 

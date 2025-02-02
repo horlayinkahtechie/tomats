@@ -21,9 +21,7 @@ import Admin from "./pages/Admin";
 import Spinner from "./components/Spinner";
 import SearchResults from "./components/SearchResults";
 import ResetPassword from "./Authentication/ResetPassword";
-
 import supabase from "./supabaseClient";
-
 import VerifyMail from "./Authentication/VerifyMail";
 import Cart from "./pages/cart";
 import Checkout from "./pages/Checkout";
@@ -87,7 +85,6 @@ function App() {
         `https://themealdb.com/api/json/v1/1/search.php?s=${foodInput}`
       );
       const fetchedData = await foodDataFetch.json();
-      console.log(fetchedData);
 
       if (fetchedData.meals === null) {
         setError("Food cannot be found. Try searching another item");
