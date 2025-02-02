@@ -8,7 +8,7 @@ import KitchenPage from "./pages/KitchenPage";
 import GalleryPage from "./pages/GalleryPage";
 import EventPage from "./pages/EventPage";
 import OrderPage from "./pages/OrderPage";
-import Signin from "./authentication/Signin";
+import Signin from "./Authentication/Signin";
 import Signup from "./authentication/Signup";
 import MenuPage from "./pages/MenuPage";
 import CocktailMenuPage from "./pages/CocktailMenuPage";
