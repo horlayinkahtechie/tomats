@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import supabase from "../supabaseClient";
-import Footer from "../components/footer";
+import supabase from "../../supabaseClient";
+import Footer from "../Footer";
 
 const Signup = () => {
   const [username, setUsername] = useState("");

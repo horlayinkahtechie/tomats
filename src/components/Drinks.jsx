@@ -1,5 +1,6 @@
 import fruitImg3 from "../Images/drinksImg.jpg";
 import { Link } from "react-router-dom";
+
 function Drinks() {
   return (
     <div className="row">

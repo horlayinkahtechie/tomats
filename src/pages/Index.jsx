@@ -3,7 +3,7 @@ import FastfoodSection from "../components/FastfoodSection";
 import LocalsSection from "../components/LocalsSection";
 import Drinks from "../components/Drinks";
 import Ourkitchensection from "../components/Ourkitchensection";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 
 export default function Index() {
   return (

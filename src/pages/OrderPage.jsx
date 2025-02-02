@@ -2,7 +2,7 @@ import efoRiroImg from "../Images/efo riro img.jfif";
 import afangSoupImg from "../Images/afang soup img.jfif";
 import bitterLeafImg from "../Images/bitter leaf soup img.jfif";
 import okroSoupImg from "../Images/okro soup img.jfif";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 
 export default function OrgerPage() {
   return (

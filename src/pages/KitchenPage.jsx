@@ -9,7 +9,7 @@ import kitchenImage2 from "../Images/kitchenImage2.jpg";
 import kitchenImage3 from "../Images/KitchenImage3.jpg";
 import kitchenImage4 from "../Images/kitchenImage4.jpg";
 import ChefDetails from "../components/ChefDetails";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 
 export default function KitchenPage() {
   return (

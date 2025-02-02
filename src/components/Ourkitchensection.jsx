@@ -2,6 +2,7 @@ import { useState } from "react";
 import kitchenImg from "../Images/kitchenImg1.jpg";
 import restaurantImg from "../Images/restaurantImg2.jpg";
 import customerSatisfactionImg from "../Images/customerSatisfactionImg.jpg";
+
 function Ourkitchensection() {
   const [nextKitchenSection, setNextKitchenSection] = useState(1);
 

@@ -1,4 +1,4 @@
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import wineImg from "../Images/wine.jpg";
 export default function WineMenuPage() {
   return (

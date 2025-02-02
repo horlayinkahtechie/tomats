@@ -3,7 +3,7 @@ import groupTableImg from "../Images/groupTable.jpg";
 import wineImg from "../Images/wine.jpg";
 import childrenMenu from "../Images/children menu.jpg";
 import steakMenu from "../Images/steakImg.jpg";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../supabaseClient";

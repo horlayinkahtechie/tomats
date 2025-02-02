@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import supabase from "../supabaseClient";
+import Spinner from "./Spinner";
 
 export default function ChangeAddressModal() {
   const [loading, setLoading] = useState(false);
@@ -26,5 +27,5 @@ export default function ChangeAddressModal() {
 
     fetchCustomerAddresses();
   }, []);
-  return;
+  return <div>{loading && <Spinner />}</div>;
 }

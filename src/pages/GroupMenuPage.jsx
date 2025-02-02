@@ -1,4 +1,4 @@
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import groupTable from "../Images/groupTable.jpg";
 export default function GroupMenuPage() {
   return (

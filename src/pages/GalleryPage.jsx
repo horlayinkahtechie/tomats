@@ -2,7 +2,7 @@ import galleryImage from "../Images/galleryImg.jpg";
 import monumentImage from "../Images/monument.jpg";
 import monumentImage2 from "../Images/monument2.jpg";
 import cocktailImg from "../Images/cocktailimg.jpg";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 
 export default function GalleryPage() {

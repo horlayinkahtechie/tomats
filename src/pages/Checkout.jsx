@@ -1,6 +1,6 @@
 import CustomerAddressSection from "../components/CustomerAddressSection";
 import DeliveryDetailsSection from "../components/DeliveryDetialsSection";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import Ordersummary from "../components/Ordersummary";
 import PaymentMethodSection from "../components/PaymentMethodSection";
 

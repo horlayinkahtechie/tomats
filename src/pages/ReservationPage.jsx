@@ -2,7 +2,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 
 export default function ReservationPage() {
   const [guests, setGuests] = useState(null);

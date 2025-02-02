@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import supabase from "../supabaseClient";
-// import Spinner from "./Spinner";
 import Logout from "./Authentication/Logout";
 
 function Navbar({ foodFetch, clearSearchedItem }) {

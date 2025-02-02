@@ -1,6 +1,6 @@
 import { supabase } from "../supabaseClient";
 import { useState } from "react";
-import Footer from "./footer";
+import Footer from "./Footer";
 
 const SearchResults = ({ foodData }) => {
   const [loadingItems, setLoadingItems] = useState({});

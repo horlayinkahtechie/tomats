@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../supabaseClient";
+import supabase from "../supabaseClient";
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

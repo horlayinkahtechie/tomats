@@ -1,4 +1,4 @@
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import childrenMenuImg from "../Images/children menu.jpg";
 export default function ChildrenMenuPage() {
   return (

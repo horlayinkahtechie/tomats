@@ -1,4 +1,5 @@
 import foodImage from "../Images/food.webp";
+
 import { Link } from "react-router-dom";
 function Carousel() {
   return (

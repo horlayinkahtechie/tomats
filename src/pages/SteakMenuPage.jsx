@@ -1,4 +1,4 @@
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import steakImg from "../Images/steakImg.jpg";
 export default function SteakMenuPage() {
   return (
