@@ -4,7 +4,7 @@ const VerifyMail = () => {
     <div>
       <p className="text-center text-dark mt-5" style={{ fontSize: "20px" }}>
         Email verification sent, verify your mail and{" "}
-        <Link to="/Auth/Login">Login in</Link>
+        <Link to="/Auth/login">Login in</Link>
       </p>
     </div>
   );

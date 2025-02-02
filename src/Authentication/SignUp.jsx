@@ -146,7 +146,7 @@ const Signup = () => {
           <p className="text-center mt-3">
             Already have an account?{" "}
             <Link
-              to="/Auth/Login"
+              to="/Auth/login"
               className="text-decoration-none"
               style={{ color: "#007bff" }}
             >
