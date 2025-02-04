@@ -107,6 +107,15 @@ const Cart = () => {
 
       if (error) {
         console.error("Error deleting item:", error.message);
+        toast.error("Error deleting item", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } else {
         setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
 

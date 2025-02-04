@@ -7,13 +7,14 @@ import Footer from "../components/Footer";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../supabaseClient";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function MenuPage() {
   const [selectedMenu, setSelectedMenu] = useState("");
   const [fetchMenu, setFetchMenu] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingItems, setLoadingItems] = useState(false);
-  const [notification, setNotification] = useState({ message: "", type: "" });
 
   const handleMenuChange = (e) => {
     const selectedValue = e.target.value;
@@ -43,9 +44,25 @@ export default function MenuPage() {
 
       if (error) {
         console.error("Error adding to cart");
-        showNotification("Failed to add item to cart!", "error");
+        toast.error("Error adding item to cart", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } else {
-        showNotification("Item added successfully!", "success");
+        toast.success("Item added to the cart", {
+          position: "top-right",
+          autoClose: 3000, // Auto close after 3 seconds
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     } catch (err) {
       console.error("Unexpected error:", err);
@@ -86,11 +103,7 @@ export default function MenuPage() {
   }, [selectedMenu]);
   return (
     <>
-      {notification.message && (
-        <div className={`notification ${notification.type}`}>
-          {notification.message}
-        </div>
-      )}
+      <ToastContainer />
 
       <div className="container-fluid menu-select">
         <div className="col-md-12">
@@ -316,45 +329,6 @@ export default function MenuPage() {
       )}
 
       <Footer />
-      <style>
-        {`
-          .notification {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 15px;
-            background: #28a745;
-            color: white;
-            border-radius: 5px;
-            font-weight: bold;
-            box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
-            transform: translateX(100%);
-            animation: slideIn 0.5s forwards, slideOut 0.5s 2.5s forwards;
-          }
-
-          .notification.error {
-            background: #dc3545;
-          }
-
-          @keyframes slideIn {
-            from {
-              transform: translateX(100%);
-            }
-            to {
-              transform: translateX(0);
-            }
-          }
-
-          @keyframes slideOut {
-            from {
-              transform: translateX(0);
-            }
-            to {
-              transform: translateX(100%);
-            }
-          }
-        `}
-      </style>
     </>
   );
 }

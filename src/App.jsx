@@ -26,7 +26,6 @@ import VerifyMail from "./components/Authentication/VerifyMail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import ProtectedRoute from "./protectedRoute/ProtectedRoute";
-import Portfolio from "./pages/Portfolio";
 
 function App() {
   const [foodData, setFoodData] = useState("");
@@ -35,13 +34,13 @@ function App() {
   const [clearSearch, setClearSearch] = useState("");
   const [error, setError] = useState(false);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingUserSession, setLoadingUserSession] = useState(true);
 
   useEffect(() => {
     async function fetchSession() {
       const { data: session } = await supabase.auth.getSession();
       setUser(session?.user || null);
-      setLoading(false);
+      setLoadingUserSession(false);
     }
 
     fetchSession();
@@ -57,17 +56,8 @@ function App() {
     };
   }, []);
 
-  if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center"
-        style={{ marginTop: "200px" }}
-      >
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
+  if (loadingUserSession) {
+    return <Spinner />;
   }
 
   const clearSearchedItem = () => {
@@ -80,6 +70,7 @@ function App() {
 
   const foodFetch = async (foodInput) => {
     setIsLoading(true);
+    setIsSearching(true);
     setError(false);
     try {
       const foodDataFetch = await fetch(
@@ -91,6 +82,7 @@ function App() {
         setError("Food cannot be found. Try searching another item");
         setFoodData(null);
         setIsSearching(false);
+        setIsLoading(false);
         return;
       }
 
@@ -106,6 +98,8 @@ function App() {
       console.log(enhancedData);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setIsLoading(false);
+      setIsSearching(false);
     } finally {
       setIsLoading(false);
     }
@@ -116,7 +110,17 @@ function App() {
       <Navbar foodFetch={foodFetch} clearSearchedItem={clearSearchedItem} />
 
       <div>
-        {!isSearching ? (
+        {isSearching ? (
+          <>
+            {isLoading ? (
+              <p className="loading">
+                <Spinner />
+              </p>
+            ) : (
+              <SearchResults foodData={foodData} error={error} />
+            )}
+          </>
+        ) : (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/About" element={<KitchenPage />} />
@@ -133,8 +137,6 @@ function App() {
             <Route path="/Group-menu" element={<GroupMenuPage />} />
             <Route path="/Children-menu" element={<ChildrenMenuPage />} />
             <Route path="/Steak-menu" element={<SteakMenuPage />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-
             <Route
               path="/cart"
               element={
@@ -168,16 +170,6 @@ function App() {
               }
             />
           </Routes>
-        ) : (
-          // Render search results when searching
-          <>
-            {isLoading && (
-              <p className="loading">
-                <Spinner />
-              </p>
-            )}
-            <SearchResults foodData={foodData} error={error} />
-          </>
         )}
       </div>
     </div>
