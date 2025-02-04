@@ -26,6 +26,7 @@ import VerifyMail from "./components/Authentication/VerifyMail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import ProtectedRoute from "./protectedRoute/ProtectedRoute";
+import Portfolio from "./pages/Portfolio";
 
 function App() {
   const [foodData, setFoodData] = useState("");
@@ -132,6 +133,7 @@ function App() {
             <Route path="/Group-menu" element={<GroupMenuPage />} />
             <Route path="/Children-menu" element={<ChildrenMenuPage />} />
             <Route path="/Steak-menu" element={<SteakMenuPage />} />
+            <Route path="/portfolio" element={<Portfolio />} />
 
             <Route
               path="/cart"
