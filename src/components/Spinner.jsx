@@ -1,7 +1,7 @@
 export default function Spinner() {
   return (
     <div
-      className="spinner-grow"
+      className="spinner-grow justify-content-center text-center"
       style={{ width: "4.3rem", height: "4.3rem" }}
       role="status"
     >

@@ -19,7 +19,7 @@ export default function Checkout() {
           buttonText="Change"
           onChange={() => alert("Change Payment Method")}
         />
-        <Ordersummary total={7899} itemsTotal={7399} deliveryFees={500} />
+        <Ordersummary deliveryFees={500} />
       </main>
       <Footer />
     </>

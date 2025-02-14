@@ -74,26 +74,25 @@ const Cart = () => {
       return;
     }
 
-    const totalQuantity = cartItems.reduce(
-      (sum, item) => sum + item.quantity,
-      0
-    );
-
     try {
-      const { error } = await supabase.from("item_details").insert([
-        {
-          item_quantity: totalQuantity, // Insert only the total quantity
-          user_id: user.user.id,
-          email: user.user.email,
-          username: user.user.user_metadata?.username || "Unknown",
-          price: totalPrice,
-        },
-      ]);
+      const itemsToInsert = cartItems.map((item) => ({
+        item_quantity: item.quantity, // Individual quantity per item
+        user_id: user.user.id,
+        email: user.user.email,
+        username: user.user.user_metadata?.username || "Unknown",
+        price: item.price * item.quantity, // Total price per item
+        meal_img: item.meal_img,
+        meal_name: item.meal_name,
+      }));
+
+      const { error } = await supabase
+        .from("item_details")
+        .insert(itemsToInsert);
 
       if (error) {
         console.error("Error adding to cart:", error.message);
       } else {
-        console.log("Item added successfully");
+        console.log("Items added successfully");
       }
     } catch (err) {
       console.error("Unexpected error:", err);
@@ -103,10 +102,40 @@ const Cart = () => {
   const removeItem = async (id) => {
     try {
       setLoading(true);
-      const { error } = await supabase.from("cart").delete().eq("id", id);
 
-      if (error) {
-        console.error("Error deleting item:", error.message);
+      // Fetch the meal_name of the item to delete
+      const { data: cartItem, error: fetchError } = await supabase
+        .from("cart")
+        .select("meal_name")
+        .eq("id", id)
+        .single();
+
+      if (fetchError || !cartItem) {
+        console.error("Error fetching cart item:", fetchError?.message);
+        toast.error("Error fetching item details");
+        return;
+      }
+
+      // Delete related records in item_details
+      const { error: itemDetailsError } = await supabase
+        .from("item_details")
+        .delete()
+        .eq("meal_name", cartItem.meal_name);
+
+      if (itemDetailsError) {
+        console.error("Error deleting item details:", itemDetailsError.message);
+        toast.error("Error deleting item details");
+        return;
+      }
+
+      // Now, delete from cart
+      const { error: cartError } = await supabase
+        .from("cart")
+        .delete()
+        .eq("id", id);
+
+      if (cartError) {
+        console.error("Error deleting item from cart:", cartError.message);
         toast.error("Error deleting item", {
           position: "top-right",
           autoClose: 3000,
@@ -119,10 +148,9 @@ const Cart = () => {
       } else {
         setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
 
-        // Show toast notification
         toast.success("Item removed successfully", {
           position: "top-right",
-          autoClose: 3000, // Auto close after 3 seconds
+          autoClose: 3000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
@@ -346,7 +374,7 @@ const Cart = () => {
                     <div className="mt-5">
                       <Link
                         onClick={addItemQuantityToItemDetails}
-                        to="/checkout"
+                        to="/checkout/payment"
                         className="button-checkout text-center"
                       >
                         Checkout

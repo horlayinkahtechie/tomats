@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import "./styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Routes, Route } from "react-router-dom";
+
+import supabase from "./supabaseClient";
+import Spinner from "./components/Spinner";
+import SearchResults from "./components/SearchResults";
+import ProtectedRoute from "./protectedRoute/ProtectedRoute";
+
+// User Components
 import Navbar from "./components/Navbar";
 import Index from "./pages/Index";
-import { Routes, Route } from "react-router-dom";
 import KitchenPage from "./pages/KitchenPage";
 import GalleryPage from "./pages/GalleryPage";
 import EventPage from "./pages/EventPage";
@@ -11,48 +18,104 @@ import OrderPage from "./pages/OrderPage";
 import Signin from "./components/Authentication/Signin";
 import Signup from "./components/Authentication/Signup";
 import MenuPage from "./pages/MenuPage";
-import CocktailMenuPage from "./pages/CocktailMenuPage";
-import WineMenuPage from "./pages/WineMenuPage";
-import GroupMenuPage from "./pages/GroupMenuPage";
-import ChildrenMenuPage from "./pages/ChildrenMenuPage";
-import SteakMenuPage from "./pages/SteakMenuPage";
-import ReservationPage from "./pages/ReservationPage";
-import Admin from "./pages/Admin";
-import Spinner from "./components/Spinner";
-import SearchResults from "./components/SearchResults";
-import ResetPassword from "./components/Authentication/ResetPassword";
-import supabase from "./supabaseClient";
-import VerifyMail from "./components/Authentication/VerifyMail";
-import Cart from "./pages/Cart";
+import Cart from "./pages/cart";
 import Checkout from "./pages/Checkout";
-import ProtectedRoute from "./protectedRoute/ProtectedRoute";
+import ReservationPage from "./pages/ReservationPage";
+import PresentOrders from "./pages/userProfile/user_orders/PresentOrders";
+import PastOrders from "./pages/userProfile/user_orders/PastOrders";
+
+// Admin Components
+import AdminNavbar from "./pages/Admin/components/Navbar";
+import Overview from "./pages/Admin/pages/Overview";
+import Reservations from "./pages/Admin/pages/Reservations";
+import Orders from "./pages/Admin/pages/Orders";
+import AdminSignin from "./pages/Admin/Auth/Signin";
 
 function App() {
-  const [foodData, setFoodData] = useState("");
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
+  const [loadingUserSession, setLoadingUserSession] = useState(true);
+  const [foodData, setFoodData] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [clearSearch, setClearSearch] = useState("");
   const [error, setError] = useState(false);
-  const [user, setUser] = useState(null);
-  const [loadingUserSession, setLoadingUserSession] = useState(true);
 
   useEffect(() => {
     async function fetchSession() {
-      const { data: session } = await supabase.auth.getSession();
-      setUser(session?.user || null);
-      setLoadingUserSession(false);
+      setLoadingUserSession(true); // Start loading state
+
+      // Get session from Supabase
+      const { data: session, error } = await supabase.auth.getSession();
+
+      if (error) {
+        console.error("Error fetching session:", error);
+        setUser(null);
+        setRole(null);
+        setLoadingUserSession(false);
+        return;
+      }
+
+      if (session?.user) {
+        setUser(session.user);
+        localStorage.setItem("user", JSON.stringify(session.user)); // Store user in localStorage
+        fetchUserRole(session.user.id);
+      } else {
+        setUser(null);
+        setRole(null);
+        setLoadingUserSession(false);
+      }
     }
 
-    fetchSession();
+    async function fetchUserRole(userId) {
+      try {
+        const { data: userData, error } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", userId)
+          .single();
 
-    const { data: subscription } = supabase.auth.onAuthStateChange(
+        if (error || !userData) {
+          setRole(null);
+        } else {
+          setRole(userData.role);
+          localStorage.setItem("role", userData.role); // Store role in localStorage
+        }
+      } catch (err) {
+        console.error("Error fetching role:", err);
+      } finally {
+        setLoadingUserSession(false);
+      }
+    }
+
+    // Restore session from localStorage on reload
+    const storedUser = localStorage.getItem("user");
+    const storedRole = localStorage.getItem("role");
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      setRole(storedRole);
+      setLoadingUserSession(false);
+    } else {
+      fetchSession();
+    }
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        setUser(session?.user || null);
+        if (session?.user) {
+          setUser(session.user);
+          localStorage.setItem("user", JSON.stringify(session.user));
+          fetchUserRole(session.user.id);
+        } else {
+          setUser(null);
+          setRole(null);
+          localStorage.removeItem("user");
+          localStorage.removeItem("role");
+        }
       }
     );
 
     return () => {
-      subscription.unsubscribe();
+      listener.subscription?.unsubscribe();
     };
   }, []);
 
@@ -61,45 +124,38 @@ function App() {
   }
 
   const clearSearchedItem = () => {
-    setClearSearch("");
     setIsSearching(false);
     setFoodData(null);
     setError(false);
-    console.log("Search cleared!");
   };
 
   const foodFetch = async (foodInput) => {
     setIsLoading(true);
     setIsSearching(true);
     setError(false);
+
     try {
       const foodDataFetch = await fetch(
         `https://themealdb.com/api/json/v1/1/search.php?s=${foodInput}`
       );
       const fetchedData = await foodDataFetch.json();
 
-      if (fetchedData.meals === null) {
-        setError("Food cannot be found. Try searching another item");
+      if (!fetchedData.meals) {
+        setError("Food cannot be found. Try searching another item.");
         setFoodData(null);
         setIsSearching(false);
-        setIsLoading(false);
-        return;
+      } else {
+        const enhancedData = fetchedData.meals.map((meal) => ({
+          ...meal,
+          price: Math.floor(Math.random() * (50 - 10 + 1)) + 10,
+        }));
+
+        setFoodData(enhancedData);
+        setError(false);
       }
-
-      // Add random prices between $10 and $50
-      const enhancedData = fetchedData.meals.map((meal) => ({
-        ...meal,
-        price: Math.floor(Math.random() * (50 - 10 + 1)) + 10,
-      }));
-
-      setFoodData(enhancedData);
-      setIsSearching(true);
-      setError(false);
-      console.log(enhancedData);
     } catch (error) {
       console.error("Error fetching data:", error);
-      setIsLoading(false);
-      setIsSearching(false);
+      setError("An error occurred while fetching data.");
     } finally {
       setIsLoading(false);
     }
@@ -107,36 +163,52 @@ function App() {
 
   return (
     <div>
-      <Navbar foodFetch={foodFetch} clearSearchedItem={clearSearchedItem} />
+      {/* Conditionally render the Navbar */}
+      {role === "admin" ? (
+        <AdminNavbar />
+      ) : (
+        <Navbar foodFetch={foodFetch} clearSearchedItem={clearSearchedItem} />
+      )}
 
       <div>
         {isSearching ? (
-          <>
-            {isLoading ? (
-              <p className="loading">
-                <Spinner />
-              </p>
-            ) : (
-              <SearchResults foodData={foodData} error={error} />
-            )}
-          </>
+          isLoading ? (
+            <p className="loading">
+              <Spinner />
+            </p>
+          ) : (
+            <SearchResults foodData={foodData} error={error} />
+          )
         ) : (
           <Routes>
-            <Route path="/" element={<Index />} />
+            {/* Public Routes */}
+            {role === "admin" ? (
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute user={user}>
+                    <Overview />
+                  </ProtectedRoute>
+                }
+              />
+            ) : (
+              <Route path="/" element={<Index />} />
+            )}
+
+            {role === "admin" ? (
+              <Route path="/admin/login" element={<AdminSignin />} />
+            ) : (
+              <Route path="/Auth/login" element={<Signin />} />
+            )}
+
             <Route path="/About" element={<KitchenPage />} />
             <Route path="/Gallery" element={<GalleryPage />} />
             <Route path="/Event" element={<EventPage />} />
             <Route path="/Order" element={<OrderPage />} />
-            <Route path="/Auth/login" element={<Signin />} />
             <Route path="/Auth/Signup" element={<Signup />} />
-            <Route path="/Auth/ResetPassword" element={<ResetPassword />} />
-            <Route path="/Auth/VerifyMail" element={<VerifyMail />} />
             <Route path="/Menu" element={<MenuPage />} />
-            <Route path="/Cocktail-menu" element={<CocktailMenuPage />} />
-            <Route path="/Wine-menu" element={<WineMenuPage />} />
-            <Route path="/Group-menu" element={<GroupMenuPage />} />
-            <Route path="/Children-menu" element={<ChildrenMenuPage />} />
-            <Route path="/Steak-menu" element={<SteakMenuPage />} />
+
+            {/* User Protected Routes */}
             <Route
               path="/cart"
               element={
@@ -146,7 +218,23 @@ function App() {
               }
             />
             <Route
-              path="/checkout"
+              path="/user/present-orders"
+              element={
+                <ProtectedRoute user={user}>
+                  <PresentOrders />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user/past-orders"
+              element={
+                <ProtectedRoute user={user}>
+                  <PastOrders />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/checkout/payment"
               element={
                 <ProtectedRoute user={user}>
                   <Checkout />
@@ -161,11 +249,31 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            {/* Admin Routes */}
+
             <Route
-              path="/Admin"
+              path="/admin/reservations"
               element={
                 <ProtectedRoute user={user}>
-                  <Admin />
+                  <Reservations />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/orders"
+              element={
+                <ProtectedRoute user={user}>
+                  <Orders />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/admin/overview"
+              element={
+                <ProtectedRoute user={user}>
+                  <Overview />
                 </ProtectedRoute>
               }
             />

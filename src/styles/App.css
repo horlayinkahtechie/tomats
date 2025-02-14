@@ -1260,3 +1260,115 @@ body {
 .confirm-btn:hover {
   background-color: #218838;
 }
+
+/* Admin Sidebar CSS */
+
+.sidebar {
+  width: 250px;
+  margin-top: 115px;
+  height: 90vh;
+  background: #333;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: width 0.3s;
+  overflow: hidden;
+}
+
+.sidebar.closed {
+  width: 60px;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+}
+
+.menu {
+  list-style: none;
+  padding: 20px;
+  margin: 0;
+  margin-top: 20px;
+}
+
+.menu li {
+  padding: 15px;
+}
+
+.menu li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  font-size: 19px;
+}
+
+.menu li:hover {
+  background: #555;
+}
+
+.logoutbtn {
+  border: none;
+  outline: none;
+  background-color: white;
+  color: black;
+  padding: 16px 35px;
+  font-size: 19px;
+}
+
+/* Order table style */
+.orders-title {
+  color: black;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Style the table */
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 16px;
+}
+
+/* Style the table header */
+.orders-table thead tr {
+  background-color: orangered;
+  color: white;
+}
+
+/* Style all table cells */
+.orders-table th,
+.orders-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+/* Alternate row colors */
+.orders-table tbody tr:nth-child(odd) {
+  background-color: white;
+  color: black;
+}
+
+.orders-table tbody tr:nth-child(even) {
+  background-color: black;
+  color: white;
+}
+
+.pay-button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import Spinner from "./Spinner";
 import supabase from "../supabaseClient";
+import PaystackPayment from "./paystackpaymentmethod/paystackpayment";
 
 const Ordersummary = ({ deliveryFees }) => {
   const [loading, setLoading] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [totalPriceofItem, setTotalPriceOfItem] = useState(0);
 
-  // Fetch cart items and calculate totals
   useEffect(() => {
     const fetchCartItems = async () => {
       const { data: userData, error: userError } =
@@ -72,9 +72,41 @@ const Ordersummary = ({ deliveryFees }) => {
       <p>
         Item&apos;s total ({quantity}): ${totalPriceofItem.toFixed(2)}
       </p>
-      <p>Delivery fees: ${deliveryFees.toFixed(2)}</p>
+      <p>Delivery fees: ${parseFloat(deliveryFees).toFixed(2)}</p>
       <h3>Total: ${parseFloat(totalPriceofItem + deliveryFees).toFixed(2)}</h3>
-      <button className="confirm-btn">Proceed to Pay</button>
+
+      <button
+        type="button"
+        className="confirm-btn"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Proceed to pay
+      </button>
+
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div className="modal-content">
+            <div className="modal-header">
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <PaystackPayment />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
