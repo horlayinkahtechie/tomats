@@ -55,45 +55,78 @@ function PresentOrders() {
     }
 
     const userId = user.user.id;
+    const userEmail = user.user.email;
 
     try {
       setLoading(true);
 
-      // ✅ Delete order from the database
-      const { error } = await supabase
+      // ✅ Fetch orders before deleting
+      const { data: orderData, error: fetchError } = await supabase
+        .from("orders")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("order_id", id)
+        .single();
+
+      if (fetchError || !orderData) {
+        console.error("Error fetching order details:", fetchError?.message);
+        toast.error("Error fetching order details!");
+        return;
+      }
+
+      // ✅ Insert orders into canceled_orders table
+      const { error: insertError } = await supabase
+        .from("canceled_orders")
+        .insert([
+          {
+            user_id: orderData.user_id,
+            meal_name: orderData.meal_name,
+            meal_img: orderData.meal_img,
+            price: orderData.price,
+            order_id: orderData.order_id,
+            canceled_at: new Date(),
+            email: userEmail,
+          },
+        ]);
+
+      if (insertError) {
+        console.error(
+          "Error moving order to canceled_orders:",
+          insertError.message
+        );
+        toast.error("Error canceling order!");
+        return;
+      }
+
+      // ✅ Delete canceled order from orders table
+      const { error: deleteError } = await supabase
         .from("orders")
         .delete()
-        .match({ user_id: userId, order_id: id });
+        .eq("user_id", userId)
+        .eq("order_id", id);
 
-      if (error) {
-        console.error("Error canceling order:", error.message);
-        toast.error("Error canceling order", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      } else {
-        // ✅ Remove the canceled order from UI state
-        setUserOrders((prevItems) =>
-          prevItems.filter((item) => item.order_id !== id)
-        );
-
-        toast.success("Order has been canceled successfully", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+      if (deleteError) {
+        console.error("Error deleting order:", deleteError.message);
+        toast.error("Error canceling order!");
+        return;
       }
+
+      // ✅ Remove the canceled order from UI state
+      setUserOrders((prevItems) =>
+        prevItems.filter((item) => item.order_id !== id)
+      );
+
+      toast.success("Order has been canceled successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     } catch (err) {
       console.error("Unexpected error:", err);
+      toast.error("An unexpected error occurred!");
     } finally {
       setLoading(false);
     }

@@ -90,7 +90,7 @@ const Cart = () => {
         .insert(itemsToInsert);
 
       if (error) {
-        console.error("Error adding to cart:", error.message);
+        console.error("Error adding to item details:", error.message);
       } else {
         console.log("Items added successfully");
       }

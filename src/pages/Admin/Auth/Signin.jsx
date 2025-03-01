@@ -24,31 +24,25 @@ const Signin = () => {
 
       if (error) throw new Error(error.message);
 
-      if (!email.includes("@")) {
-        setSignInErrorMessage("Please enter a valid email address.");
-        return;
-      }
-
       const user = data.user;
-      if (user) {
-        navigate("/admin/overview");
-      } else {
-        throw new Error("Unable to retrieve user information.");
+      if (!user) throw new Error("Unable to retrieve user information.");
+
+      // Check if the user is an admin in the database
+      const { data: adminData, error: adminError } = await supabase
+        .from("admins")
+        .select("role")
+        .eq("email", email)
+        .maybeSingle();
+
+      if (adminError) throw new Error(adminError.message);
+
+      if (!adminData || adminData.role !== "admin") {
+        throw new Error("Access denied. You are not an admin.");
       }
 
-      if (error) {
-        if (error.status === 400) {
-          throw new Error("Invalid email or password.");
-        } else if (error.status === 409) {
-          throw new Error("User already exists.");
-        } else {
-          throw new Error("An unexpected error occurred.");
-        }
-      }
+      navigate("/admin/overview"); // Redirect if admin
     } catch (error) {
-      setSignInErrorMessage(
-        error.message || "Something went wrong. Please try again."
-      );
+      setSignInErrorMessage(error.message || "Something went wrong.");
     } finally {
       setIsLoading(false);
     }

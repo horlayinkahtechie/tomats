@@ -10,56 +10,39 @@ const SearchResults = ({ foodData }) => {
   const addToCart = async (food, index) => {
     setLoadingItems((prev) => ({ ...prev, [index]: true }));
 
-    const { data: user, error: userError } = await supabase.auth.getUser();
-    if (userError || !user?.user) {
-      console.error("No user logged in:", userError);
-      toast.error("Error fetching user", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+    // Get authenticated user
+    const { data: authUser, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !authUser?.user) {
+      toast.error("User not logged in", { position: "top-right" });
       setLoadingItems((prev) => ({ ...prev, [index]: false }));
       return;
     }
 
+    const userId = authUser.user.id;
+    const userEmail = authUser.user.email;
+    console.log("User metadata:", authUser.user_metadata.username);
+
     try {
       const { error } = await supabase.from("cart").insert([
         {
-          user_id: user.user.id,
+          user_id: userId,
           meal_name: food.strMeal,
           meal_img: food.strMealThumb,
           price: food.price || 50,
+          email: userEmail,
         },
       ]);
 
       if (error) {
-        console.error("Error adding to cart");
-        toast.error("Error adding item to cart", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        console.error("Error adding to cart:", error.message);
+        toast.error("Error adding item to cart", { position: "top-right" });
       } else {
-        toast.success("Item added to cart", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.success("Item added to cart", { position: "top-right" });
       }
     } catch (err) {
       console.error("Unexpected error:", err);
+      toast.error("Something went wrong", { position: "top-right" });
     } finally {
       setLoadingItems((prev) => ({ ...prev, [index]: false }));
     }

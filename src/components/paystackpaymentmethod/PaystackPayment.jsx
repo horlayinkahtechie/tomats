@@ -25,6 +25,8 @@ const PaystackPayment = () => {
     }
 
     const userId = user.user.id;
+    const userEmail = user.user.email;
+    const userName = user.user_metadata.username;
 
     // Ensure user_id is in UUID format
     const uuidRegex =
@@ -42,6 +44,7 @@ const PaystackPayment = () => {
       status: "successful",
       payment_id: reference.reference,
       created_at: new Date().toISOString(),
+      email: userEmail,
     };
 
     const { data: payment, error: paymentError } = await supabase
@@ -100,6 +103,8 @@ const PaystackPayment = () => {
       meal_img: item.meal_img,
       payment_id: String(payment.payment_id),
       payment_status: "success",
+      email: userEmail,
+      username: userName,
     }));
 
     const { error: orderError } = await supabase

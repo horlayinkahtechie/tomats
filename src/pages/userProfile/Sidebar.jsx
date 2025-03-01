@@ -11,9 +11,10 @@ function Sidebar() {
     >
       <hr />
 
-      <ul className="nav nav-pills mb-auto p-3">
+      <ul className="nav nav-pills mb-auto">
         <li className="nav-item">
           <Link
+            style={{ width: "250px" }}
             to="/user/present-orders"
             className={`nav-link ${
               location.pathname === "/user/present-orders"
@@ -27,6 +28,7 @@ function Sidebar() {
         <li>
           <Link
             to="/user/past-orders"
+            style={{ width: "250px" }}
             className={`nav-link ${
               location.pathname === "/user/past-orders"
                 ? "active bg-primary"
@@ -39,6 +41,7 @@ function Sidebar() {
         <li>
           <Link
             to="/reservations"
+            style={{ width: "250px" }}
             className={`nav-link ${
               location.pathname === "/reservations"
                 ? "active bg-primary"
@@ -50,6 +53,7 @@ function Sidebar() {
         </li>
         <li>
           <Link
+            style={{ width: "250px" }}
             to="/settings"
             className={`nav-link ${
               location.pathname === "/settings"

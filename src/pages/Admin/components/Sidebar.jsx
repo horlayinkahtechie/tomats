@@ -11,9 +11,10 @@ function Sidebar() {
     >
       <hr />
 
-      <ul className="nav nav-pills mb-auto p-3">
+      <ul className="nav nav-pills mb-auto ">
         <li className="nav-item">
           <Link
+            style={{ width: "250px" }}
             to="/admin/overview"
             className={`nav-link ${
               location.pathname === "/admin/overview"
@@ -21,10 +22,13 @@ function Sidebar() {
                 : "text-white"
             }`}
           >
-            Overview
+            Dashboard
           </Link>
+        </li>
+        <li>
           <Link
             to="/admin/orders"
+            style={{ width: "250px" }}
             className={`nav-link ${
               location.pathname === "/admin/orders"
                 ? "active bg-primary"
@@ -36,7 +40,34 @@ function Sidebar() {
         </li>
         <li>
           <Link
+            to="/admin/delivered-orders"
+            style={{ width: "250px" }}
+            className={`nav-link ${
+              location.pathname === "/admin/delivered-orders"
+                ? "active bg-primary"
+                : "text-white"
+            }`}
+          >
+            Delivered Orders
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/admin/canceled-orders"
+            style={{ width: "250px" }}
+            className={`nav-link ${
+              location.pathname === "/admin/canceled-orders"
+                ? "active bg-primary"
+                : "text-white"
+            }`}
+          >
+            Canceled Orders
+          </Link>
+        </li>
+        <li>
+          <Link
             to="/admin/reservations"
+            style={{ width: "250px" }}
             className={`nav-link ${
               location.pathname === "/admin/reservations"
                 ? "active bg-primary"
@@ -48,7 +79,19 @@ function Sidebar() {
         </li>
         <li>
           <Link
-            to="/settings"
+            to="/#"
+            style={{ width: "250px" }}
+            className={`nav-link ${
+              location.pathname === "/#" ? "active bg-primary" : "text-white"
+            }`}
+          >
+            Insert product
+          </Link>
+        </li>
+        <li>
+          <Link
+            style={{ width: "250px" }}
+            to="#"
             className={`nav-link ${
               location.pathname === "/settings"
                 ? "active bg-primary"

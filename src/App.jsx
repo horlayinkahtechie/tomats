@@ -30,6 +30,8 @@ import Overview from "./pages/Admin/pages/Overview";
 import Reservations from "./pages/Admin/pages/Reservations";
 import Orders from "./pages/Admin/pages/Orders";
 import AdminSignin from "./pages/Admin/Auth/Signin";
+import DeliveredOrders from "./pages/Admin/pages/deliveredOrders";
+import CanceledUserOrders from "./pages/Admin/pages/CanceledOrders";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -42,7 +44,7 @@ function App() {
 
   useEffect(() => {
     async function fetchSession() {
-      setLoadingUserSession(true); // Start loading state
+      setLoadingUserSession(true);
 
       // Get session from Supabase
       const { data: session, error } = await supabase.auth.getSession();
@@ -274,6 +276,23 @@ function App() {
               element={
                 <ProtectedRoute user={user}>
                   <Overview />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/admin/delivered-orders"
+              element={
+                <ProtectedRoute user={user}>
+                  <DeliveredOrders />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/canceled-orders"
+              element={
+                <ProtectedRoute user={user}>
+                  <CanceledUserOrders />
                 </ProtectedRoute>
               }
             />
