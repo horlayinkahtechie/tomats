@@ -9,11 +9,22 @@ import Footer from "../../../components/Footer";
 function Orders() {
   const [loading, setLoading] = useState(true);
   const [userOrders, setUserOrders] = useState([]);
+
+  const [filterAllOrders, setFilterAllOrders] = useState([]);
+  const [currentPageAllOrders, setCurrentPageAllOrders] = useState(1);
+
   const [deliveredOrders, setDeliveredOrders] = useState(new Set());
+  const [currentPageDeliveredOrders, setCurrentPageDeliveredOrders] =
+    useState(1);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [viewOrderDetails, setViewOrderDetails] = useState(false);
+  const [filterDeliveredOrders, setFilteredDeliveredOrders] = useState([]);
+  // const [filteredOrders, setFilteredOrders] = useState([]);
 
   const ordersPerPage = 4;
+  const deliveredOrderPerPage = 4;
+  const allOrdersPerPage = 4;
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -21,11 +32,14 @@ function Orders() {
       try {
         const { data: orders, error: ordersError } = await supabase
           .from("orders")
-          .select("*");
+          .select("*")
+          .order("created_at", { ascending: false });
         if (ordersError) {
           console.error("Error fetching orders:", ordersError.message);
         } else {
           setUserOrders(orders || []);
+          setFilterAllOrders([]);
+          setFilteredDeliveredOrders([]);
         }
 
         const { data: deliveredData, error: deliveredError } = await supabase
@@ -82,9 +96,11 @@ function Orders() {
         return;
       }
 
-      setDeliveredOrders(
-        (prevDelivered) => new Set([...prevDelivered, order.order_id])
-      );
+      setDeliveredOrders((prevDelivered) => {
+        const updatedSet = new Set(prevDelivered);
+        updatedSet.add(order.order_id);
+        return updatedSet;
+      });
       toast.success("Order marked as delivered!");
     } catch (err) {
       console.error("Unexpected error:", err);
@@ -110,11 +126,78 @@ function Orders() {
     console.log("Order details");
   };
 
+  const fetchDeliveredOrders = async () => {
+    setLoading(true);
+
+    try {
+      // Fetch all collected orders
+      const { data: collectedOrders, error: collectedOrdersError } =
+        await supabase.from("collected_orders").select("*");
+
+      if (collectedOrdersError) {
+        console.error(
+          "Error fetching delivered orders:",
+          collectedOrdersError.message
+        );
+      } else {
+        setUserOrders([]);
+        setFilterAllOrders([]);
+        setFilteredDeliveredOrders(collectedOrders || []);
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchAllOrders = async () => {
+    setLoading(true);
+    try {
+      const { data: orders, error: ordersError } = await supabase
+        .from("orders")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (ordersError) {
+        console.error("Error fetching orders:", ordersError.message);
+      } else {
+        setFilterAllOrders(orders || []);
+        setFilteredDeliveredOrders([]);
+        setUserOrders([]);
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
   const currentOrders = userOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
+  const indexOfLastDeliveredOrder =
+    currentPageDeliveredOrders * deliveredOrderPerPage;
+  const indexOfFirstDeliveredOrder =
+    indexOfLastDeliveredOrder - deliveredOrderPerPage;
+  const deliverOrder = filterDeliveredOrders.slice(
+    indexOfFirstDeliveredOrder,
+    indexOfLastDeliveredOrder
+  );
+
+  const indexOfLastAllOrder = currentPageAllOrders * allOrdersPerPage;
+  const indexOfFirstAllOrder = indexOfLastAllOrder - allOrdersPerPage;
+  const allItemOrdered = filterAllOrders.slice(
+    indexOfFirstAllOrder,
+    indexOfLastAllOrder
+  );
+
+  // const allOrder = allOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginateDeliveredOrders = (pageNumber) =>
+    setCurrentPageDeliveredOrders(pageNumber);
+  const paginateAllOrder = (pageNumber) => setCurrentPageAllOrders(pageNumber);
 
   if (loading) {
     return <Spinner />;
@@ -129,6 +212,41 @@ function Orders() {
             <Sidebar />
           </div>
           <div className="col-md-9 mt-5 mb-5">
+            <div className="sorts mb-5">
+              <button
+                type="button"
+                className="sort-btn"
+                onClick={() => fetchAllOrders()}
+              >
+                All orders
+              </button>
+              <button type="button" className="sort-btn">
+                Newest
+              </button>
+              <button type="button" className="sort-btn">
+                7 days
+              </button>
+              <button type="button" className="sort-btn">
+                1 month
+              </button>
+              <button type="button" className="sort-btn">
+                1 year
+              </button>
+              <button
+                type="button"
+                className="sort-btn"
+                onClick={() => fetchDeliveredOrders()}
+              >
+                Delivered
+              </button>
+              <button
+                type="button"
+                className="sort-btn"
+                // onClick={() => filterOrders(365)}
+              >
+                Not Delivered
+              </button>
+            </div>
             <div className="row mt-2" style={{ paddingRight: "40px" }}>
               {currentOrders.map((item) => (
                 <div key={item.order_id} className="item-container">
@@ -207,6 +325,50 @@ function Orders() {
               )}
             </div>
 
+            <div className="pagination d-flex justify-content-center mt-2 mb-4">
+              {Array.from(
+                {
+                  length: Math.ceil(
+                    filterDeliveredOrders.length / deliveredOrderPerPage
+                  ),
+                },
+                (_, index) => (
+                  <button
+                    key={index}
+                    className={`mx-1 btn ${
+                      currentPageDeliveredOrders === index + 1
+                        ? "btn-light text-primary"
+                        : "btn-primary"
+                    }`}
+                    onClick={() => paginateDeliveredOrders(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                )
+              )}
+            </div>
+
+            <div className="pagination d-flex justify-content-center mt-2 mb-4">
+              {Array.from(
+                {
+                  length: Math.ceil(filterAllOrders.length / allOrdersPerPage),
+                },
+                (_, index) => (
+                  <button
+                    key={index}
+                    className={`mx-1 btn ${
+                      currentPageAllOrders === index + 1
+                        ? "btn-light text-primary"
+                        : "btn-primary"
+                    }`}
+                    onClick={() => paginateAllOrder(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                )
+              )}
+            </div>
+
             {viewOrderDetails && (
               <div
                 className="modal fade"
@@ -232,6 +394,66 @@ function Orders() {
                 </div>
               </div>
             )}
+
+            {deliverOrder.map((item) => (
+              <div key={item.order_id} className="item-container">
+                <ul
+                  className="item-background-color p-0 m-0"
+                  style={{ listStyle: "none" }}
+                >
+                  <li className="item-details">
+                    <img
+                      className="img-fluid item-img"
+                      src={item.meal_img}
+                      alt={item.meal_name}
+                      width="100"
+                    />
+                    <div style={{ flex: 1 }}>
+                      <p className="email">{item.email}</p>
+                      <p className="item-name">{item.meal_name}</p>
+                      <p className="price">${item.price.toFixed(2)}</p>
+                    </div>
+                    <p
+                      className="order-id"
+                      style={{ cursor: "pointer", color: "orangered" }}
+                      onClick={() => copyToClipboard(item.order_id)}
+                    >
+                      Copy order ID
+                    </p>
+                  </li>
+                </ul>
+              </div>
+            ))}
+
+            {allItemOrdered.map((item) => (
+              <div key={item.order_id} className="item-container">
+                <ul
+                  className="item-background-color p-0 m-0"
+                  style={{ listStyle: "none" }}
+                >
+                  <li className="item-details">
+                    <img
+                      className="img-fluid item-img"
+                      src={item.meal_img}
+                      alt={item.meal_name}
+                      width="100"
+                    />
+                    <div style={{ flex: 1 }}>
+                      <p className="email">{item.email}</p>
+                      <p className="item-name">{item.meal_name}</p>
+                      <p className="price">${item.price.toFixed(2)}</p>
+                    </div>
+                    <p
+                      className="order-id"
+                      style={{ cursor: "pointer", color: "orangered" }}
+                      onClick={() => copyToClipboard(item.order_id)}
+                    >
+                      Copy order ID
+                    </p>
+                  </li>
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       </div>

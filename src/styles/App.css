@@ -1373,3 +1373,17 @@ body {
   cursor: pointer;
   background-color: green;
 }
+
+.sort-btn {
+  border: none;
+  outline: none;
+  padding: 15px;
+  border-radius: 50px;
+  width: 130px;
+  margin-left: 15px;
+}
+
+.sort-btn:hover {
+  background-color: grey;
+  transition: 0.5s all;
+}
