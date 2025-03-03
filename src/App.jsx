@@ -18,7 +18,7 @@ import OrderPage from "./pages/OrderPage";
 import Signin from "./components/Authentication/Signin";
 import Signup from "./components/Authentication/Signup";
 import MenuPage from "./pages/MenuPage";
-import Cart from "./pages/cart";
+import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import ReservationPage from "./pages/ReservationPage";
 import PresentOrders from "./pages/userProfile/user_orders/PresentOrders";
