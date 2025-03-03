@@ -30,7 +30,7 @@ import Overview from "./pages/Admin/pages/Overview";
 import Reservations from "./pages/Admin/pages/Reservations";
 import Orders from "./pages/Admin/pages/Orders";
 import AdminSignin from "./pages/Admin/Auth/Signin";
-import DeliveredOrders from "./pages/Admin/pages/deliveredOrders";
+import DeliveredOrders from "./pages/Admin/pages/DeliveredOrders";
 import CanceledUserOrders from "./pages/Admin/pages/CanceledOrders";
 
 function App() {
