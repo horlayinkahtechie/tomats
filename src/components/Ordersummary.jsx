@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Spinner from "./Spinner";
 import supabase from "../supabaseClient";
-import PaystackPayment from "./paystackpaymentmethod/paystackpayment";
+import PaystackPayment from "./paystackpaymentmethod/PaystackPayment";
 
 const Ordersummary = ({ deliveryFees }) => {
   const [loading, setLoading] = useState(false);
