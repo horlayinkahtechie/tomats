@@ -9,6 +9,9 @@ import Footer from "../../../components/Footer";
 function PresentOrders() {
   const [loading, setLoading] = useState(true);
   const [userOrders, setUserOrders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const presentOrderPerPage = 4;
 
   useEffect(() => {
     const fetchUserOrders = async () => {
@@ -132,6 +135,16 @@ function PresentOrders() {
     }
   };
 
+  const indexOfLastPresentOrder = currentPage * presentOrderPerPage;
+  const indexOfFirstPresentOrder =
+    indexOfLastPresentOrder - presentOrderPerPage;
+  const currentPresentOrders = userOrders.slice(
+    indexOfFirstPresentOrder,
+    indexOfLastPresentOrder
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   if (loading) {
     return <Spinner />;
   }
@@ -148,15 +161,36 @@ function PresentOrders() {
             <p style={{ color: "black", fontSize: "26px" }}>
               Your Present Orders
             </p>
+
+            <div className="pagination d-flex justify-content-center mt-2 mb-4">
+              {Array.from(
+                {
+                  length: Math.ceil(userOrders.length / presentOrderPerPage),
+                },
+                (_, index) => (
+                  <button
+                    key={index}
+                    className={`mx-1 btn ${
+                      currentPage === index + 1
+                        ? "btn-light text-primary"
+                        : "btn-primary"
+                    }`}
+                    onClick={() => paginate(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                )
+              )}
+            </div>
             <div className="row mt-5" style={{ paddingRight: "40px" }}>
               {" "}
-              {userOrders.map((item) => (
+              {currentPresentOrders.map((item) => (
                 <div key={item.id} className="item-container">
                   <ul
                     className="item-background-color"
                     style={{ listStyle: "none", margin: 0, padding: 0 }}
                   >
-                    <li className="item-details">
+                    <li key={item.id} className="item-details">
                       <img
                         className="img-fluid item-img"
                         src={item.meal_img}

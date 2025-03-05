@@ -18,9 +18,11 @@ function Orders() {
     useState(1);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewOrderDetails, setViewOrderDetails] = useState(false);
   const [filterDeliveredOrders, setFilteredDeliveredOrders] = useState([]);
-  // const [filteredOrders, setFilteredOrders] = useState([]);
+
+  // const [viewOrderDetails, setViewOrderDetails] = useState(false);
+  // const [viewSelectedOrderDetails, setViewSelectedOrderDetails] =
+  //   useState(null);
 
   const ordersPerPage = 4;
   const deliveredOrderPerPage = 4;
@@ -121,10 +123,37 @@ function Orders() {
       });
   };
 
-  const orderDetails = () => {
-    setViewOrderDetails(true);
-    console.log("Order details");
-  };
+  // const orderDetails = async (orderId) => {
+  //   if (!orderId) {
+  //     console.error("Invalid orderId:", orderId);
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   try {
+  //     const { data: order, error } = await supabase
+  //       .from("orders")
+  //       .select("price, payment_status")
+  //       .eq("order_id", orderId)
+  //       .single();
+
+  //     if (error) {
+  //       throw new Error(error.message);
+  //     }
+
+  //     if (!order) {
+  //       console.warn("Order not found");
+  //       return;
+  //     }
+
+  //     setViewSelectedOrderDetails(order);
+  //     setViewOrderDetails(true);
+  //   } catch (err) {
+  //     console.error("Error fetching order details:", err.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const fetchDeliveredOrders = async () => {
     setLoading(true);
@@ -192,8 +221,6 @@ function Orders() {
     indexOfLastAllOrder
   );
 
-  // const allOrder = allOrders.slice(indexOfFirstOrder, indexOfLastOrder);
-
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const paginateDeliveredOrders = (pageNumber) =>
     setCurrentPageDeliveredOrders(pageNumber);
@@ -252,7 +279,7 @@ function Orders() {
                 <div key={item.order_id} className="item-container">
                   <ul
                     className="item-background-color p-0 m-0"
-                    onClick={() => orderDetails()}
+                    // onClick={() => orderDetails(order.id)}
                     type="button"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
@@ -368,7 +395,7 @@ function Orders() {
                 )
               )}
             </div>
-
+            {/* 
             {viewOrderDetails && (
               <div
                 className="modal fade"
@@ -388,12 +415,14 @@ function Orders() {
                       ></button>
                     </div>
                     <div className="modal-body">
-                      <p>This is the Order details</p>
+                      <p>{viewSelectedOrderDetails.payment_status}</p>
+                      <p>{viewSelectedOrderDetails.price}</p>
+                      <p></p>
                     </div>
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
 
             {deliverOrder.map((item) => (
               <div key={item.order_id} className="item-container">
