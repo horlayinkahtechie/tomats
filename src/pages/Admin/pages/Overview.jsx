@@ -161,7 +161,11 @@ function Overview() {
   }, []);
 
   if (loading) {
-    return <Spinner />;
+    return (
+      <div className="text-center">
+        <Spinner />
+      </div>
+    );
   }
 
   return (

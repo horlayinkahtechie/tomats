@@ -20,6 +20,10 @@ function Orders() {
   const [currentPage, setCurrentPage] = useState(1);
   const [filterDeliveredOrders, setFilteredDeliveredOrders] = useState([]);
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [allOrders, setAllOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+
   // const [viewOrderDetails, setViewOrderDetails] = useState(false);
   // const [viewSelectedOrderDetails, setViewSelectedOrderDetails] =
   //   useState(null);
@@ -27,6 +31,45 @@ function Orders() {
   const ordersPerPage = 4;
   const deliveredOrderPerPage = 4;
   const allOrdersPerPage = 4;
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+
+    if (value === "") {
+      setFilteredOrders(allOrders); // Reset to all orders
+    } else {
+      const filtered = allOrders.filter((order) =>
+        order.order_id.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredOrders(filtered);
+      setUserOrders([]);
+    }
+  };
+
+  useEffect(() => {
+    const fetchSearchedOrders = async () => {
+      setLoading(true);
+      try {
+        const { data: orders, error: ordersError } = await supabase
+          .from("orders")
+          .select("*");
+
+        if (ordersError) {
+          console.error("Error fetching orders:", ordersError.message);
+        } else {
+          setAllOrders(orders); // ✅ Store all orders
+          // setFilteredOrders(orders); // ✅ Initialize filteredOrders
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSearchedOrders();
+  }, []);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -227,7 +270,11 @@ function Orders() {
   const paginateAllOrder = (pageNumber) => setCurrentPageAllOrders(pageNumber);
 
   if (loading) {
-    return <Spinner />;
+    return (
+      <div className="text-center">
+        <Spinner />
+      </div>
+    );
   }
 
   return (
@@ -239,6 +286,21 @@ function Orders() {
             <Sidebar />
           </div>
           <div className="col-md-9 mt-5 mb-5">
+            <div className="search-bar mb-5 mt-4">
+              <form action="">
+                <div style={{ display: "flex", gap: "40px" }}>
+                  {" "}
+                  <input
+                    type="text"
+                    placeholder="Search with order ID"
+                    className="form-control"
+                    style={{ height: "52px" }}
+                    value={searchTerm}
+                    onChange={handleSearch}
+                  />
+                </div>
+              </form>
+            </div>
             <div className="sorts mb-5">
               <button
                 type="button"
@@ -395,6 +457,7 @@ function Orders() {
                 )
               )}
             </div>
+
             {/* 
             {viewOrderDetails && (
               <div
@@ -483,6 +546,27 @@ function Orders() {
                 </ul>
               </div>
             ))}
+
+            {filteredOrders.length > 0 ? (
+              filteredOrders.map((order) => (
+                <div key={order.order_id} className="order-card">
+                  <p>
+                    <strong>Order ID:</strong> {order.order_id}
+                  </p>
+                  <p>
+                    <strong>User Email:</strong> {order.email}
+                  </p>
+                  <p>
+                    <strong>Meal Name:</strong> {order.meal_name}
+                  </p>
+                  <p>
+                    <strong>Price:</strong> ${order.price.toFixed(2)}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p>No order found</p>
+            )}
           </div>
         </div>
       </div>

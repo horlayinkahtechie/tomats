@@ -21,7 +21,6 @@ const SearchResults = ({ foodData }) => {
 
     const userId = authUser.user.id;
     const userEmail = authUser.user.email;
-    console.log("User metadata:", authUser.user_metadata.username);
 
     try {
       const { error } = await supabase.from("cart").insert([

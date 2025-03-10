@@ -60,7 +60,11 @@ export default function DeliveredOrders() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   if (loading) {
-    return <Spinner />;
+    return (
+      <div className="text-center">
+        <Spinner />
+      </div>
+    );
   }
 
   return (
@@ -72,6 +76,25 @@ export default function DeliveredOrders() {
             <Sidebar />
           </div>
           <div className="col-md-9 mt-5 mb-5">
+            <div className="pagination d-flex justify-content-center mt-4 mb-4">
+              {Array.from(
+                { length: Math.ceil(deliveredOrders.length / ordersPerPage) },
+                (_, index) => (
+                  <button
+                    key={index}
+                    className={`mx-1 btn ${
+                      currentPage === index + 1
+                        ? "btn-light text-primary"
+                        : "btn-primary"
+                    }`}
+                    onClick={() => paginate(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                )
+              )}
+            </div>
+
             {currentDeliveredOrders.map((item) => (
               <div key={item.order_id} className="item-container">
                 <ul
@@ -86,6 +109,7 @@ export default function DeliveredOrders() {
                       width="100"
                     />
                     <div style={{ flex: 1 }}>
+                      <p className="email">{item.email}</p>
                       <p className="item-name">{item.meal_name}</p>
                       <p className="price">${item.price.toFixed(2)}</p>
                     </div>
@@ -121,24 +145,6 @@ export default function DeliveredOrders() {
                 </ul>
               </div>
             ))}
-          </div>
-          <div className="pagination d-flex justify-content-center mt-4">
-            {Array.from(
-              { length: Math.ceil(deliveredOrders.length / ordersPerPage) },
-              (_, index) => (
-                <button
-                  key={index}
-                  className={`mx-1 btn ${
-                    currentPage === index + 1
-                      ? "btn-light text-primary"
-                      : "btn-primary"
-                  }`}
-                  onClick={() => paginate(index + 1)}
-                >
-                  {index + 1}
-                </button>
-              )
-            )}
           </div>
         </div>
       </div>

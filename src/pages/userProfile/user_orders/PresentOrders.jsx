@@ -10,8 +10,15 @@ function PresentOrders() {
   const [loading, setLoading] = useState(true);
   const [userOrders, setUserOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [collectedOrders, setCollectedOrders] = useState([]);
+  const [openCancelOrderModal, setOpenCancelOrderModal] = useState(false);
 
   const presentOrderPerPage = 4;
+
+  const openCancelOrder = () => {
+    setOpenCancelOrderModal(true);
+    console.log("Cancel Order modal opened");
+  };
 
   useEffect(() => {
     const fetchUserOrders = async () => {
@@ -135,6 +142,23 @@ function PresentOrders() {
     }
   };
 
+  useEffect(() => {
+    const fetchCollectedOrders = async () => {
+      const { data, error } = await supabase
+        .from("collected_orders")
+        .select("order_id");
+
+      if (error) {
+        console.error("Error fetching collected orders:", error.message);
+        return;
+      }
+
+      setCollectedOrders(data.map((order) => order.order_id));
+    };
+
+    fetchCollectedOrders();
+  }, []);
+
   const indexOfLastPresentOrder = currentPage * presentOrderPerPage;
   const indexOfFirstPresentOrder =
     indexOfLastPresentOrder - presentOrderPerPage;
@@ -145,8 +169,23 @@ function PresentOrders() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast.success("Order ID copied!");
+      })
+      .catch(() => {
+        toast.error("Failed to copy Order ID");
+      });
+  };
+
   if (loading) {
-    return <Spinner />;
+    return (
+      <div className="text-center">
+        <Spinner />
+      </div>
+    );
   }
 
   return (
@@ -162,64 +201,142 @@ function PresentOrders() {
               Your Present Orders
             </p>
 
-            <div className="pagination d-flex justify-content-center mt-2 mb-4">
-              {Array.from(
-                {
-                  length: Math.ceil(userOrders.length / presentOrderPerPage),
-                },
-                (_, index) => (
-                  <button
-                    key={index}
-                    className={`mx-1 btn ${
-                      currentPage === index + 1
-                        ? "btn-light text-primary"
-                        : "btn-primary"
-                    }`}
-                    onClick={() => paginate(index + 1)}
-                  >
-                    {index + 1}
-                  </button>
-                )
-              )}
-            </div>
-            <div className="row mt-5" style={{ paddingRight: "40px" }}>
-              {" "}
-              {currentPresentOrders.map((item) => (
-                <div key={item.id} className="item-container">
-                  <ul
-                    className="item-background-color"
-                    style={{ listStyle: "none", margin: 0, padding: 0 }}
-                  >
-                    <li key={item.id} className="item-details">
-                      <img
-                        className="img-fluid item-img"
-                        src={item.meal_img}
-                        alt={item.meal_name}
-                        width="100"
-                      />
-                      <div style={{ flex: 1 }}>
-                        <p className="item-name">{item.meal_name}</p>
-                        <p className="price">${item.price.toFixed(2)}</p>
-                      </div>
+            {userOrders.length === 0 ? (
+              <p
+                style={{
+                  fontSize: "22px",
+                  color: "orangered",
+                  textAlign: "center",
+                  marginTop: "50px",
+                }}
+              >
+                You do not have any past orders
+              </p>
+            ) : (
+              <>
+                <div className="pagination d-flex justify-content-center mt-2 mb-4">
+                  {Array.from(
+                    {
+                      length: Math.ceil(
+                        userOrders.length / presentOrderPerPage
+                      ),
+                    },
+                    (_, index) => (
                       <button
-                        style={{
-                          backgroundColor: "orangered",
-                          border: "none",
-                          outline: "none",
-                          padding: "18px",
-                          color: "white",
-                          fontSize: "18px",
-                        }}
-                        type="button"
-                        onClick={() => cancelOrder(item.order_id)}
+                        key={index}
+                        className={`mx-1 btn ${
+                          currentPage === index + 1
+                            ? "btn-light text-primary"
+                            : "btn-primary"
+                        }`}
+                        onClick={() => paginate(index + 1)}
                       >
-                        Cancel order
+                        {index + 1}
                       </button>
-                    </li>
-                  </ul>
+                    )
+                  )}
                 </div>
-              ))}
-            </div>
+                <div className="row mt-5" style={{ paddingRight: "40px" }}>
+                  {" "}
+                  {currentPresentOrders.map((item) => (
+                    <div key={item.id} className="item-container">
+                      <ul
+                        className="item-background-color"
+                        style={{ listStyle: "none", margin: 0, padding: 0 }}
+                      >
+                        <li key={item.id} className="item-details">
+                          <img
+                            className="img-fluid item-img"
+                            src={item.meal_img}
+                            alt={item.meal_name}
+                            width="100"
+                          />
+                          <div style={{ flex: 1 }}>
+                            <p className="email">{item.email}</p>
+                            <p className="item-name">{item.meal_name}</p>
+                            <p className="price">${item.price.toFixed(2)}</p>
+                          </div>
+                          <p
+                            className="order-id"
+                            style={{ cursor: "pointer", color: "orangered" }}
+                            onClick={() => copyToClipboard(item.order_id)}
+                          >
+                            Copy order ID
+                          </p>
+                          <button
+                            style={{
+                              backgroundColor: collectedOrders.includes(
+                                item.order_id
+                              )
+                                ? "green"
+                                : "orangered",
+                              border: "none",
+                              outline: "none",
+                              padding: "18px",
+                              color: "white",
+                              fontSize: "18px",
+                            }}
+                            type="button"
+                            onClick={openCancelOrder}
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"
+                            disabled={collectedOrders.includes(item.order_id)}
+                          >
+                            {collectedOrders.includes(item.order_id)
+                              ? "Delivered"
+                              : "Cancel Order"}
+                          </button>
+                        </li>
+                      </ul>
+
+                      {openCancelOrderModal && (
+                        <div
+                          className="modal fade"
+                          id="exampleModal"
+                          tabIndex="-1"
+                          aria-labelledby="exampleModalLabel"
+                          aria-hidden="true"
+                        >
+                          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div className="modal-content">
+                              <div className="modal-body">
+                                <p
+                                  style={{
+                                    padding: "20px",
+                                    fontSize: "19.3px",
+                                  }}
+                                >
+                                  Do you want to delete your order?
+                                </p>
+                                <button
+                                  type="button"
+                                  style={{
+                                    padding: "13px",
+                                    width: "180px",
+                                    height: "48px",
+                                    border: "none",
+                                    outline: "none",
+                                  }}
+                                  onClick={() => {
+                                    if (
+                                      !collectedOrders.includes(item.order_id)
+                                    ) {
+                                      cancelOrder(item.order_id);
+                                    }
+                                  }}
+                                >
+                                  Cancel Order
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

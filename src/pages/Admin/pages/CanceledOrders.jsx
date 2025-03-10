@@ -9,7 +9,9 @@ import { toast, ToastContainer } from "react-toastify";
 function CanceledOrders() {
   const [loading, setLoading] = useState(true);
   const [canceledOrders, setCanceledOrders] = useState([]);
-  const [sortFilter, setSortFilter] = useState("newest"); // Default filter
+  const [sortFilter, setSortFilter] = useState("newest");
+  const [currentPage, setCurrentPage] = useState(1);
+  const canceledOrdersPerPage = 4;
 
   useEffect(() => {
     const fetchCanceledOrders = async () => {
@@ -35,34 +37,6 @@ function CanceledOrders() {
     fetchCanceledOrders();
   }, []);
 
-  // 🔹 Get current date
-  const currentDate = new Date();
-
-  // 🔹 Filtering orders based on `created_at`
-  const filteredOrders = canceledOrders.filter((order) => {
-    const orderDate = new Date(order.canceled_at);
-
-    if (sortFilter === "7days") {
-      const last7Days = new Date();
-      last7Days.setDate(currentDate.getDate() - 7);
-      return orderDate >= last7Days;
-    }
-
-    if (sortFilter === "1month") {
-      const last1Month = new Date();
-      last1Month.setMonth(currentDate.getMonth() - 1);
-      return orderDate >= last1Month;
-    }
-
-    if (sortFilter === "1year") {
-      const last1Year = new Date();
-      last1Year.setFullYear(currentDate.getFullYear() - 1);
-      return orderDate >= last1Year;
-    }
-
-    return true; // Default: Show all orders
-  });
-
   const copyToClipboard = (text) => {
     navigator.clipboard
       .writeText(text)
@@ -70,8 +44,22 @@ function CanceledOrders() {
       .catch(() => toast.error("Failed to copy Order ID"));
   };
 
+  const indexOfLastCanceledOrder = currentPage * canceledOrdersPerPage;
+  const indexOfFirstCanceledOrder =
+    indexOfLastCanceledOrder - canceledOrdersPerPage;
+  const currentCanceledOrders = canceledOrders.slice(
+    indexOfFirstCanceledOrder,
+    indexOfLastCanceledOrder
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   if (loading) {
-    return <Spinner />;
+    return (
+      <div className="text-center">
+        <Spinner />
+      </div>
+    );
   }
 
   return (
@@ -83,13 +71,6 @@ function CanceledOrders() {
             <Sidebar />
           </div>
           <div className="col-md-9 mt-5">
-            <div className="d-flex justify-content-between align-items-center">
-              <p style={{ color: "black", fontSize: "26px" }}>
-                Canceled Orders
-              </p>
-            </div>
-
-            {/* Sorting Buttons */}
             <div className="sorts mb-5">
               <button
                 type="button"
@@ -125,8 +106,31 @@ function CanceledOrders() {
               </button>
             </div>
 
+            <div className="pagination d-flex justify-content-center mt-4 mb-4">
+              {Array.from(
+                {
+                  length: Math.ceil(
+                    canceledOrders.length / canceledOrdersPerPage
+                  ),
+                },
+                (_, index) => (
+                  <button
+                    key={index}
+                    className={`mx-1 btn ${
+                      currentPage === index + 1
+                        ? "btn-light text-primary"
+                        : "btn-primary"
+                    }`}
+                    onClick={() => paginate(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                )
+              )}
+            </div>
+
             <div className="row mt-5" style={{ paddingRight: "40px" }}>
-              {filteredOrders.map((item) => (
+              {currentCanceledOrders.map((item) => (
                 <div key={item.order_id} className="item-container">
                   <ul
                     className="item-background-color"
@@ -140,6 +144,7 @@ function CanceledOrders() {
                         width="100"
                       />
                       <div style={{ flex: 1 }}>
+                        <p className="email">{item.email}</p>
                         <p className="item-name">{item.meal_name}</p>
                         <p className="price">${item.price.toFixed(2)}</p>
                         <p className="created-at">

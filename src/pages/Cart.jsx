@@ -10,6 +10,12 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [openDeleteModalWindow, setOpenDeleteModalWindow] = useState(false);
+
+  const openDeleteModal = () => {
+    setOpenDeleteModalWindow(true);
+    console.log("Open delete modal");
+  };
 
   useEffect(() => {
     const total = cartItems.reduce(
@@ -167,7 +173,7 @@ const Cart = () => {
 
   if (loading) {
     return (
-      <div className="container text-center">
+      <div className="text-center">
         <Spinner />
       </div>
     );
@@ -269,7 +275,9 @@ const Cart = () => {
                         <button
                           type="button"
                           className="item-remove"
-                          onClick={() => removeItem(item.id)}
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                          onClick={openDeleteModal}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -327,6 +335,40 @@ const Cart = () => {
                         </button>
                       </div>
                     </ul>
+                    {openDeleteModalWindow && (
+                      <div
+                        className="modal fade"
+                        id="exampleModal"
+                        tabIndex="-1"
+                        aria-labelledby="exampleModalLabel"
+                        aria-hidden="true"
+                      >
+                        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                          <div className="modal-content">
+                            <div className="modal-body">
+                              <p
+                                style={{ padding: "20px", fontSize: "19.3px" }}
+                              >
+                                Do you want to delete cart Item?
+                              </p>
+                              <button
+                                type="button"
+                                style={{
+                                  padding: "13px",
+                                  width: "180px",
+                                  height: "48px",
+                                  border: "none",
+                                  outline: "none",
+                                }}
+                                onClick={() => removeItem(item.id)}
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
