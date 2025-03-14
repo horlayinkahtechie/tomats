@@ -37,7 +37,8 @@ function Orders() {
     setSearchTerm(value);
 
     if (value === "") {
-      setFilteredOrders(allOrders); // Reset to all orders
+      setFilteredOrders([]);
+      setUserOrders(userOrders);
     } else {
       const filtered = allOrders.filter((order) =>
         order.order_id.toLowerCase().includes(value.toLowerCase())
@@ -58,8 +59,7 @@ function Orders() {
         if (ordersError) {
           console.error("Error fetching orders:", ordersError.message);
         } else {
-          setAllOrders(orders); // ✅ Store all orders
-          // setFilteredOrders(orders); // ✅ Initialize filteredOrders
+          setAllOrders(orders);
         }
       } catch (err) {
         console.error("Unexpected error:", err);
@@ -562,10 +562,15 @@ function Orders() {
                   <p>
                     <strong>Price:</strong> ${order.price.toFixed(2)}
                   </p>
+                  <p>
+                    <strong>Payment Status:</strong> {order.payment_status}
+                  </p>
                 </div>
               ))
             ) : (
-              <p>No order found</p>
+              <p style={{ textAlign: "center", fontSize: "23px" }}>
+                No order found
+              </p>
             )}
           </div>
         </div>

@@ -9,7 +9,6 @@ import { toast, ToastContainer } from "react-toastify";
 function CanceledOrders() {
   const [loading, setLoading] = useState(true);
   const [canceledOrders, setCanceledOrders] = useState([]);
-  const [sortFilter, setSortFilter] = useState("newest");
   const [currentPage, setCurrentPage] = useState(1);
   const canceledOrdersPerPage = 4;
 
@@ -71,41 +70,6 @@ function CanceledOrders() {
             <Sidebar />
           </div>
           <div className="col-md-9 mt-5">
-            <div className="sorts mb-5">
-              <button
-                type="button"
-                className={`sort-btn ${
-                  sortFilter === "newest" ? "active" : ""
-                }`}
-                onClick={() => setSortFilter("newest")}
-              >
-                Newest
-              </button>
-              <button
-                type="button"
-                className={`sort-btn ${sortFilter === "7days" ? "active" : ""}`}
-                onClick={() => setSortFilter("7days")}
-              >
-                7 days
-              </button>
-              <button
-                type="button"
-                className={`sort-btn ${
-                  sortFilter === "1month" ? "active" : ""
-                }`}
-                onClick={() => setSortFilter("1month")}
-              >
-                1 month
-              </button>
-              <button
-                type="button"
-                className={`sort-btn ${sortFilter === "1year" ? "active" : ""}`}
-                onClick={() => setSortFilter("1year")}
-              >
-                1 year
-              </button>
-            </div>
-
             <div className="pagination d-flex justify-content-center mt-4 mb-4">
               {Array.from(
                 {
