@@ -29,7 +29,7 @@ const Signin = () => {
 
       // Check if the user is an admin in the database
       const { data: adminData, error: adminError } = await supabase
-        .from("admins")
+        .from("profiles")
         .select("role")
         .eq("email", email)
         .maybeSingle();
@@ -40,7 +40,7 @@ const Signin = () => {
         throw new Error("Access denied. You are not an admin.");
       }
 
-      navigate("/admin/overview"); // Redirect if admin
+      navigate("/admin/overview");
     } catch (error) {
       setSignInErrorMessage(error.message || "Something went wrong.");
     } finally {

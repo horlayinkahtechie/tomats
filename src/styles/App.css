@@ -1384,6 +1384,6 @@ body {
 }
 
 .sort-btn:hover {
-  background-color: grey;
+  /* background-color: grey; */
   transition: 0.5s all;
 }

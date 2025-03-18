@@ -1,10 +1,10 @@
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const ProtectedRoute = ({ user, children }) => {
-  if (!user) {
-    return <Navigate to="/Auth/login" />;
+const ProtectedRoute = ({ user, role, requiredRole, children }) => {
+  const navigate = useNavigate;
+  if (!user || (requiredRole && role !== requiredRole)) {
+    return navigate("/");
   }
-
   return children;
 };
 

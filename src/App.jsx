@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import supabase from "./supabaseClient";
 import Spinner from "./components/Spinner";
@@ -20,7 +20,7 @@ import Signup from "./components/Authentication/Signup";
 import MenuPage from "./pages/MenuPage";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
-import ReservationPage from "./pages/ReservationPage";
+import ReservationPage from "./pages/Reservation/UserReservations";
 import PresentOrders from "./pages/userProfile/user_orders/PresentOrders";
 import PastOrders from "./pages/userProfile/user_orders/PastOrders";
 
@@ -98,6 +98,7 @@ function App() {
       setRole(storedRole);
       setLoadingUserSession(false);
     } else {
+      console.log("User Role:", role);
       fetchSession();
     }
 
@@ -183,25 +184,36 @@ function App() {
           )
         ) : (
           <Routes>
-            {/* Public Routes */}
+            {/* Redirect admins to "/admin/overview" when they visit  */}
             {role === "admin" ? (
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute user={user}>
-                    <Overview />
-                  </ProtectedRoute>
-                }
-              />
+              <>
+                <Route
+                  path="/admin/overview"
+                  element={
+                    <ProtectedRoute
+                      user={user}
+                      role={role}
+                      requiredRole="admin"
+                    >
+                      <Overview />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="*"
+                  element={<Navigate to="/admin/overview" replace />}
+                />
+              </>
             ) : (
-              <Route path="/" element={<Index />} />
+              // Route to the home page if it's not an admin
+              <>
+                <Route path="/" element={<Index />} />
+                <Route path="*" element={<Index />} />
+              </>
             )}
 
-            {role === "admin" ? (
-              <Route path="/admin/login" element={<AdminSignin />} />
-            ) : (
-              <Route path="/Auth/login" element={<Signin />} />
-            )}
+            <Route path="/admin/login" element={<AdminSignin />} />
+            <Route path="/Auth/login" element={<Signin />} />
 
             <Route path="/About" element={<KitchenPage />} />
             <Route path="/Gallery" element={<GalleryPage />} />
@@ -252,12 +264,12 @@ function App() {
               }
             />
 
-            {/* Admin Routes */}
+            {/* Admin Protected Routes */}
 
             <Route
               path="/admin/reservations"
               element={
-                <ProtectedRoute user={user}>
+                <ProtectedRoute user={user} role={role} requiredRole="admin">
                   <Reservations />
                 </ProtectedRoute>
               }
@@ -265,25 +277,23 @@ function App() {
             <Route
               path="/admin/orders"
               element={
-                <ProtectedRoute user={user}>
+                <ProtectedRoute user={user} role={role} requiredRole="admin">
                   <Orders />
                 </ProtectedRoute>
               }
             />
-
             <Route
               path="/admin/overview"
               element={
-                <ProtectedRoute user={user}>
+                <ProtectedRoute user={user} role={role} requiredRole="admin">
                   <Overview />
                 </ProtectedRoute>
               }
             />
-
             <Route
               path="/admin/delivered-orders"
               element={
-                <ProtectedRoute user={user}>
+                <ProtectedRoute user={user} role={role} requiredRole="admin">
                   <DeliveredOrders />
                 </ProtectedRoute>
               }
@@ -291,7 +301,7 @@ function App() {
             <Route
               path="/admin/canceled-orders"
               element={
-                <ProtectedRoute user={user}>
+                <ProtectedRoute user={user} role={role} requiredRole="admin">
                   <CanceledUserOrders />
                 </ProtectedRoute>
               }

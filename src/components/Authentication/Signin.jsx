@@ -26,25 +26,36 @@ const Signin = () => {
 
       if (!email.includes("@")) {
         setSignInErrorMessage("Please enter a valid email address.");
+        setIsLoading(false);
         return;
       }
 
       const user = data.user;
-      if (user) {
-        navigate("/");
-      } else {
+      if (!user) {
         throw new Error("Unable to retrieve user information.");
       }
 
-      if (error) {
-        if (error.status === 400) {
-          throw new Error("Invalid email or password.");
-        } else if (error.status === 409) {
-          throw new Error("User already exists.");
-        } else {
-          throw new Error("An unexpected error occurred.");
-        }
+      // Fetch the user's role from Supabase
+      const { data: userData, error: roleError } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+
+      if (roleError) {
+        throw new Error("Error fetching user role.");
       }
+
+      if (userData.role === "admin") {
+        setSignInErrorMessage("Cannot log in through user login.");
+        await supabase.auth.signOut(); // Log out the admin
+        navigate("/");
+        setIsLoading(false);
+        return;
+      }
+
+      // Allow regular users to navigate
+      navigate("/");
     } catch (error) {
       setSignInErrorMessage(
         error.message || "Something went wrong. Please try again."
