@@ -5,6 +5,7 @@ import Spinner from "../../../components/Spinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "../../../components/Footer";
+import "./style.css";
 
 function PresentOrders() {
   const [loading, setLoading] = useState(true);

@@ -1,17 +1,18 @@
-import foodImage from "../Images/food.webp";
+import foodImage from "../../Images/food.webp";
+import "./style.css";
 
 import { Link } from "react-router-dom";
 function Carousel() {
   return (
     <div>
-      <div className="carousel-inner" style={{ paddingBottom: "100px" }}>
+      <div className="carousel-inner">
         <div className="carousel-item active">
           <div className="carousel-overlay"></div>
           <img
             src={foodImage}
             className="d-block w-100 img-fluid"
             alt="..."
-            style={{ maxHeight: "87vh", minHeight: "50vh" }}
+            style={{ maxHeight: "87vh", minHeight: "62vh" }}
             loading="lazy"
           />
           <div className="carousel-caption section">

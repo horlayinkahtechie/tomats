@@ -1,15 +1,15 @@
 import { useState } from "react";
-import fruitImg3 from "../Images/foodImg4.webp";
-import vegetableImg1 from "../Images/vegetableImg1.jpg";
-import vegetableImg2 from "../Images/vegetableImg2.jpg";
+import fruitImg3 from "../../Images/foodImg4.webp";
+import vegetableImg1 from "../../Images/vegetableImg1.jpg";
+import vegetableImg2 from "../../Images/vegetableImg2.jpg";
 
-import snackImg1 from "../Images/snackImg1.jpg";
-import snackImg2 from "../Images/snackImg2.jpg";
-import snackImg3 from "../Images/snackImg3.jpg";
+import snackImg1 from "../../Images/snackImg1.jpg";
+import snackImg2 from "../../Images/snackImg2.jpg";
+import snackImg3 from "../../Images/snackImg3.jpg";
 
-import pastriesImg1 from "../Images/pastriesImg1.jpg";
-import pastriesImg2 from "../Images/pastriesImg2.jpg";
-import pastriesImg3 from "../Images/pastriesImg3.jpg";
+import pastriesImg1 from "../../Images/pastriesImg1.jpg";
+import pastriesImg2 from "../../Images/pastriesImg2.jpg";
+import pastriesImg3 from "../../Images/pastriesImg3.jpg";
 
 function FastfoodSection() {
   const [serviceNav, setServiceNav] = useState(1);
@@ -20,12 +20,12 @@ function FastfoodSection() {
 
   return (
     <>
-      <ul className="list-style-type-none">
+      <ul className="">
         <li className="list-item">
           <button
             onClick={() => serviceNavClick(1)}
             style={{
-              borderBottom: serviceNav === 1 ? "4px solid orangered" : "black",
+              borderBottom: serviceNav === 1 ? "3px solid orangered" : "black",
             }}
           >
             Vegetables
@@ -35,7 +35,7 @@ function FastfoodSection() {
           <button
             onClick={() => serviceNavClick(2)}
             style={{
-              borderBottom: serviceNav === 2 ? "4px solid orangered" : "black",
+              borderBottom: serviceNav === 2 ? "3px solid orangered" : "black",
             }}
           >
             Snacks
@@ -45,7 +45,7 @@ function FastfoodSection() {
           <button
             onClick={() => serviceNavClick(3)}
             style={{
-              borderBottom: serviceNav === 3 ? "4px solid orangered" : "black",
+              borderBottom: serviceNav === 3 ? "3px solid orangered" : "black",
             }}
           >
             Pastries
@@ -53,7 +53,7 @@ function FastfoodSection() {
         </li>
       </ul>
       {serviceNav === 1 && (
-        <div className="row mt-5 p-5">
+        <div className="row p-2">
           <div className="col-md-4 mt-3">
             <div className="fast-foods">
               <img
@@ -108,7 +108,7 @@ function FastfoodSection() {
         </div>
       )}
       {serviceNav === 2 && (
-        <div className="row mt-5 p-5">
+        <div className="row p-2">
           <div className="col-md-4 mt-3">
             <div className="fast-foods">
               <img
@@ -164,7 +164,7 @@ function FastfoodSection() {
         </div>
       )}
       {serviceNav === 3 && (
-        <div className="row mt-5 p-5">
+        <div className="row p-2">
           <div className="col-md-4 mt-3">
             <div className="fast-foods">
               <img

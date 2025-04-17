@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./reservationStyle.css";
 import supabase from "../../supabaseClient";
 import { ToastContainer, toast } from "react-toastify";
+import "./reservationStyle.css";
 
 const ReservationSteps = () => {
   const [loading, setLoading] = useState(false);
@@ -93,36 +94,44 @@ const ReservationSteps = () => {
 
   const formInputs = (e) => {
     const { name, value } = e.target;
-    switch (name) {
-      case "firstName":
-        setFirstName(value);
-        break;
-      case "lastName":
-        setLastName(value);
-        break;
-      case "email":
-        setEmail(value);
-        break;
-      case "phoneNo":
-        setPhoneNo(value);
-        break;
-      case "reservationDate":
-        setReservationDate(value);
-        break;
-      case "reservationTime":
-        setReservationTime(value);
-        break;
-      case "noOfGuests":
-        setNoOfGuests(value);
-        break;
-      case "specialRequests":
-        setSpecialRequests(value);
-        break;
-      case "noOfReservedSeat":
-        setNoOfReservedSeat(value);
-        break;
-      default:
-        break;
+
+    if (name === "noOfGuests") {
+      const guests = parseInt(value) || 0; // Convert to number, default to 0 if NaN
+      setNoOfGuests(guests);
+
+      if (guests < 3) {
+        setNoOfReservedSeat(2);
+      } else {
+        setNoOfReservedSeat(guests); // Automatically set seats to guest count
+      }
+    } else if (name === "noOfReservedSeat") {
+      setNoOfReservedSeat(parseInt(value) || 0); // Ensure it's a number
+    } else {
+      switch (name) {
+        case "firstName":
+          setFirstName(value);
+          break;
+        case "lastName":
+          setLastName(value);
+          break;
+        case "email":
+          setEmail(value);
+          break;
+        case "phoneNo":
+          setPhoneNo(value);
+          break;
+        case "reservationDate":
+          setReservationDate(value);
+          break;
+        case "reservationTime":
+          setReservationTime(value);
+          break;
+        case "specialRequests":
+          setSpecialRequests(value);
+          break;
+        default:
+          break;
+      }
     }
   };
 

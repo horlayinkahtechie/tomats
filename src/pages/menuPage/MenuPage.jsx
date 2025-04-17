@@ -1,14 +1,15 @@
-import cocktailImg from "../Images/cocktailimg.jpg";
-import groupTableImg from "../Images/groupTable.jpg";
-import wineImg from "../Images/wine.jpg";
-import childrenMenu from "../Images/children menu.jpg";
-import steakMenu from "../Images/steakImg.jpg";
-import Footer from "../components/Footer";
+import cocktailImg from "../../Images/cocktailimg.jpg";
+import groupTableImg from "../../Images/groupTable.jpg";
+import wineImg from "../../Images/wine.jpg";
+import childrenMenu from "../../Images/children menu.jpg";
+import steakMenu from "../../Images/steakImg.jpg";
+import Footer from "../../components/Footer";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import supabase from "../supabaseClient";
+import supabase from "../../supabaseClient";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./menu.css";
 
 export default function MenuPage() {
   const [selectedMenu, setSelectedMenu] = useState("");
@@ -27,7 +28,7 @@ export default function MenuPage() {
     const { data: user, error: userError } = await supabase.auth.getUser();
     if (userError || !user?.user) {
       console.error("No user logged in:", userError);
-      showNotification("You need to log in first!", "error");
+      // showNotification("You need to log in first!", "error");
       setLoadingItems((prev) => ({ ...prev, [index]: false }));
       return;
     }
@@ -66,18 +67,18 @@ export default function MenuPage() {
       }
     } catch (err) {
       console.error("Unexpected error:", err);
-      showNotification("An unexpected error occurred!", "error");
+      // showNotification("An unexpected error occurred!", "error");
     } finally {
       setLoadingItems((prev) => ({ ...prev, [index]: false }));
     }
   };
 
-  const showNotification = (message, type) => {
-    setNotification({ message, type });
-    setTimeout(() => {
-      setNotification({ message: "", type: "" });
-    }, 3000); // Hide notification after 3 seconds
-  };
+  // const showNotification = (message, type) => {
+  //   setNotification({ message, type });
+  //   setTimeout(() => {
+  //     setNotification({ message: "", type: "" });
+  //   }, 3000); // Hide notification after 3 seconds
+  // };
 
   useEffect(() => {
     if (!selectedMenu) return;

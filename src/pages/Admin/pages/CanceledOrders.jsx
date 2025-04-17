@@ -5,6 +5,7 @@ import Spinner from "../../../components/Spinner";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "../../../components/Footer";
 import { toast, ToastContainer } from "react-toastify";
+import "./style.css";
 
 function CanceledOrders() {
   const [loading, setLoading] = useState(true);

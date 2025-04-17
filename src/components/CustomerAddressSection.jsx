@@ -132,6 +132,7 @@ const CustomerAddressSection = ({ title }) => {
                     display: "flex",
                     alignItems: "center",
                     gap: "10px",
+                    color: "black",
                   }}
                 >
                   {/* Radio Button */}
@@ -153,11 +154,11 @@ const CustomerAddressSection = ({ title }) => {
                       paddingRight: "35px",
                     }}
                   >
-                    <h4 style={{ fontSize: "19px" }}>
+                    <h4 style={{ fontSize: "19px", color: "black" }}>
                       <strong>Address {index + 1}:</strong> {item.address}
                     </h4>
 
-                    <h4 style={{ fontSize: "19px" }}>
+                    <h4 style={{ fontSize: "19px", color: "black" }}>
                       <strong>Phone No {index + 1}:</strong> {item.phone_no}
                     </h4>
                   </div>
@@ -236,6 +237,7 @@ const CustomerAddressSection = ({ title }) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            color: "black",
           }}
         >
           <div
@@ -246,6 +248,7 @@ const CustomerAddressSection = ({ title }) => {
               maxWidth: "500px",
               width: "90%",
               boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
+              color: "black",
             }}
           >
             <h3>Change Address</h3>

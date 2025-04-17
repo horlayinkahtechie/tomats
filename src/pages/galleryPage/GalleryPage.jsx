@@ -1,9 +1,10 @@
-import galleryImage from "../Images/galleryImg.jpg";
-import monumentImage from "../Images/monument.jpg";
-import monumentImage2 from "../Images/monument2.jpg";
-import cocktailImg from "../Images/cocktailimg.jpg";
-import Footer from "../components/Footer";
+import galleryImage from "../../Images/galleryImg.jpg";
+import monumentImage from "../../Images/monument.jpg";
+import monumentImage2 from "../../Images/monument2.jpg";
+import cocktailImg from "../../Images/cocktailimg.jpg";
+import Footer from "../../components/Footer";
 import { Link } from "react-router-dom";
+import "./gallery.css";
 
 export default function GalleryPage() {
   return (
@@ -14,7 +15,7 @@ export default function GalleryPage() {
           <img
             src={galleryImage}
             className="d-block w-100 img-fluid"
-            alt="..."
+            alt="Our gallery"
             style={{ maxHeight: "87vh", minHeight: "50vh" }}
             loading="lazy"
           />
@@ -25,10 +26,7 @@ export default function GalleryPage() {
       </div>
 
       <div className="container-fluid mb-5 section-margin">
-        <div
-          className="row"
-          style={{ paddingLeft: "120px", paddingRight: "120px" }}
-        >
+        <div className="row gallery-padding">
           <div className="col-md-6 monument-margin">
             <h3 className="monument-heading">A MONUMENT</h3>
             <p className="monument-p">
@@ -41,10 +39,10 @@ export default function GalleryPage() {
           <div className="col-md-6">
             <img src={monumentImage} alt="A monument" className="img-fluid" />
           </div>
-          <div className="col-md-6 mt-5">
+          <div className="col-md-6 monument-margin">
             <img src={monumentImage2} alt="A monument" className="img-fluid" />
           </div>
-          <div className="col-md-6 monument-margin">
+          <div className="col-md-6 monument-p-margin">
             <h3 className="monument-heading">STILL DELIVERING</h3>
             <p className="monument-p">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum

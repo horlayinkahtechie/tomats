@@ -1,26 +1,28 @@
-import foodSafety from "../Images/foodsafetypackaging.jpg";
-import testimonialsImg1 from "../Images/manImage2.jpg";
-import dinngImage1 from "../Images/diningImage.jpg";
-import diningImage2 from "../Images/diningImg2.jpg";
-import diningImage3 from "../Images/diningImage3.jpg";
-import diningImage4 from "../Images/diningImg4.jpg";
-import kitchenImage1 from "../Images/kitchenImage1.jpg";
-import kitchenImage2 from "../Images/kitchenImage2.jpg";
-import kitchenImage3 from "../Images/kitchenImage3.jpg";
-import kitchenImage4 from "../Images/kitchenImage4.jpg";
-import ChefDetails from "../components/ChefDetails";
-import Footer from "../components/Footer";
+import foodSafety from "../../Images/foodsafetypackaging.jpg";
+// import testimonialsImg1 from "../../Images/manImage2.jpg";
+import dinngImage1 from "../../Images/diningImage.jpg";
+import diningImage2 from "../../Images/diningImg2.jpg";
+import diningImage3 from "../../Images/diningImage3.jpg";
+import diningImage4 from "../../Images/diningImg4.jpg";
+import kitchenImage1 from "../../Images/kitchenImage1.jpg";
+import kitchenImage2 from "../../Images/kitchenImage2.jpg";
+import kitchenImage3 from "../../Images/kitchenImage3.jpg";
+import kitchenImage4 from "../../Images/kitchenImage4.jpg";
+import ChefDetails from "./ChefDetails";
+import Footer from "../../components/Footer";
+import "./about.css";
 
 export default function KitchenPage() {
   return (
     <>
       <div className="container-fluid bg-color">
-        <div className="row p-5">
+        <div className="row pt-4 pl-1">
           <div className="col-md-6">
             <img
               className="img-fluid"
               src={foodSafety}
               alt="Food safety Image"
+              loading="lazy"
             />
           </div>
           <div className="col-md-6 kitchen-intro">
@@ -52,12 +54,15 @@ export default function KitchenPage() {
           <ChefDetails />
 
           <div className="row section-margin">
-            <h3 className="ourEnvironmentHeading mb-5">OUR BEAUTIFUL INDOOR</h3>
+            <h3 className="ourEnvironmentHeading mb-5 mt-5">
+              OUR BEAUTIFUL INDOOR
+            </h3>
             <div className="col-md-3 mt-3">
               <img
                 src={dinngImage1}
                 className="img-fluid"
                 alt="Kitchen Image"
+                loading="lazy"
               />
             </div>
             <div className="col-md-3 mt-3">
@@ -65,6 +70,7 @@ export default function KitchenPage() {
                 src={diningImage2}
                 className="img-fluid"
                 alt="Kitchen Image"
+                loading="lazy"
               />
             </div>
             <div className="col-md-3 mt-3">
@@ -72,6 +78,7 @@ export default function KitchenPage() {
                 src={diningImage3}
                 className="img-fluid"
                 alt="Kitchen Image"
+                loading="lazy"
               />
             </div>
             <div className="col-md-3 mt-3">
@@ -79,16 +86,18 @@ export default function KitchenPage() {
                 src={diningImage4}
                 className="img-fluid"
                 alt="Kitchen Image"
+                loading="lazy"
               />
             </div>
           </div>
           <div className="row section-margin">
-            <h3 className="ourEnvironmentHeading mb-5">WHERE WE COOK</h3>
+            <h3 className="ourEnvironmentHeading mb-5 mt-5">WHERE WE COOK</h3>
             <div className="col-md-3 mt-3">
               <img
                 src={kitchenImage1}
                 className="img-fluid"
                 alt="Kitchen Image"
+                loading="lazy"
               />
             </div>
             <div className="col-md-3 mt-3">
@@ -96,6 +105,7 @@ export default function KitchenPage() {
                 src={kitchenImage2}
                 className="img-fluid"
                 alt="Kitchen Image"
+                loading="lazy"
               />
             </div>
             <div className="col-md-3 mt-3">
@@ -103,6 +113,7 @@ export default function KitchenPage() {
                 src={kitchenImage3}
                 className="img-fluid"
                 alt="Kitchen Image"
+                loading="lazy"
               />
             </div>
             <div className="col-md-3 mt-3">
@@ -110,6 +121,7 @@ export default function KitchenPage() {
                 src={kitchenImage4}
                 className="img-fluid"
                 alt="Kitchen Image"
+                loading="lazy"
               />
             </div>
           </div>
@@ -126,7 +138,7 @@ export default function KitchenPage() {
               </button>
             </div>
             <div className="col-md-6 border-left">
-              <h3 className="custom-meal-heading">Want to host a party</h3>
+              <h3 className="custom-meal-heading">Want to host a party?</h3>
               <p className="custom-meal-p">
                 You can also call us to help you cook at your party for a
                 discounted price. Let us help you cook a delicous food. Order us
@@ -138,7 +150,7 @@ export default function KitchenPage() {
             </div>
           </div>
 
-          <div className="row section-padding section-margin">
+          {/* <div className="row section-padding section-margin">
             <div className="col-md-8">
               <h3 className="customerName">Customer Name1</h3>
               <p className="customer-review">
@@ -151,9 +163,10 @@ export default function KitchenPage() {
                 src={testimonialsImg1}
                 alt="Testimonials"
                 className="img-fluid"
+                loading="lazy"
               />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <Footer />

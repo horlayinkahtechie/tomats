@@ -1,8 +1,8 @@
 import Chef from "./Chef";
-import chefImg1 from "../Images/chef1.jpg";
-import chefImg2 from "../Images/chef2.jpg";
-import chefImg3 from "../Images/chef3.jpg";
-import chefImg4 from "../Images/chef4.jpg";
+import chefImg1 from "../../Images/chef1.jpg";
+import chefImg2 from "../../Images/chef2.jpg";
+import chefImg3 from "../../Images/chef3.jpg";
+import chefImg4 from "../../Images/chef4.jpg";
 
 const ChefDetails = () => {
   const chefs = [

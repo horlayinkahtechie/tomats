@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import supabase from "../supabaseClient";
+import supabase from "../../supabaseClient";
 import { Link } from "react-router-dom";
-import Spinner from "../components/Spinner";
-import Footer from "../components/Footer";
+import Spinner from "../../components/Spinner";
+import Footer from "../../components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./cart.css";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -184,7 +185,7 @@ const Cart = () => {
       <ToastContainer />
       <div
         className="container-fluid"
-        style={{ width: "100vw", height: "100vh" }}
+        // style={{ width: "100vw", height: "100vh" }}
       >
         {cartItems.length === 0 ? (
           <div
@@ -221,23 +222,8 @@ const Cart = () => {
             </p>
           </div>
         ) : (
-          <div
-            className=""
-            style={{
-              paddingLeft: "130px",
-              paddingRight: "130px",
-              paddingBottom: "90px",
-            }}
-          >
-            <h1
-              style={{
-                color: "red",
-                // paddingLeft: "130px",
-                paddingRight: "130px",
-                paddingTop: "50px",
-                paddingBottom: "50px",
-              }}
-            >
+          <div className="cart-padding">
+            <h1 className="no-of-cart-heading">
               Your Cart ({cartItems.length})
             </h1>
             <div className="row">
@@ -264,17 +250,10 @@ const Cart = () => {
                         </div>
                       </li>
 
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: "40px",
-                          marginTop: "20px",
-                          alignItems: "center",
-                        }}
-                      >
+                      <div className="remove-decrease-add-btn">
                         <button
                           type="button"
-                          className="item-remove"
+                          className="item-delete"
                           data-bs-toggle="modal"
                           data-bs-target="#exampleModal"
                           onClick={openDeleteModal}
@@ -343,15 +322,32 @@ const Cart = () => {
                         aria-labelledby="exampleModalLabel"
                         aria-hidden="true"
                       >
-                        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div className="modal-dialog modal-dialog-centered">
                           <div className="modal-content">
                             <div className="modal-body">
                               <p
-                                style={{ padding: "20px", fontSize: "19.3px" }}
+                                style={{
+                                  padding: "20px",
+                                  fontSize: "19.3px",
+                                  color: "black",
+                                }}
                               >
                                 Do you want to delete cart Item?
                               </p>
                               <button
+                                onClick={() => {
+                                  removeItem(item.id);
+                                  document
+                                    .getElementById("exampleModal")
+                                    .classList.remove("show");
+                                  document.getElementById(
+                                    "exampleModal"
+                                  ).style.display = "none";
+                                  document.body.classList.remove("modal-open");
+                                  document
+                                    .querySelector(".modal-backdrop")
+                                    .remove();
+                                }}
                                 type="button"
                                 style={{
                                   padding: "13px",
@@ -360,7 +356,6 @@ const Cart = () => {
                                   border: "none",
                                   outline: "none",
                                 }}
-                                onClick={() => removeItem(item.id)}
                               >
                                 Delete
                               </button>
@@ -428,9 +423,9 @@ const Cart = () => {
             </div>
           </div>
         )}
-        <Footer />
+        {/* <Footer /> */}
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };

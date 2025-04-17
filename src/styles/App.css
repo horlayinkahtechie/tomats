@@ -17,9 +17,9 @@ body {
   outline: none;
 }
 
-.navbar-toggler-icon {
+/* .navbar-toggler-icon {
   outline: orangered;
-}
+} */
 
 .navbar-nav {
   margin-left: 40px;
@@ -53,68 +53,10 @@ body {
 .navbar-brand {
   color: orangered;
   font-size: 60px;
-  font-weight: 500;
+  font-weight: 600;
   padding-left: 90px;
   font-family: "Qwitcher Grypen", cursive;
-  font-weight: 500;
   font-style: normal;
-}
-
-/* Carousel styles */
-.carousel-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(15, 15, 15, 0.8);
-}
-
-.carousel-section {
-  background-color: rgb(42, 31, 31);
-  padding-left: 120px;
-  padding-right: 120px;
-}
-
-.carousel-caption {
-  position: absolute;
-  left: 70px;
-  top: 190px;
-  width: 100vw;
-  text-align: start;
-  color: white;
-}
-
-.carousel-heading {
-  font-size: 60px;
-  text-align: start;
-}
-
-.carousel-description {
-  font-size: 32px;
-  text-align: start;
-  width: 50%;
-  line-height: 47px;
-  margin-top: 15px;
-}
-
-.highlight-carousel {
-  color: orangered;
-}
-
-.reservation-btn,
-.order-btn {
-  background-color: orangered;
-  color: white;
-  padding: 20px;
-  padding-left: 30px;
-  padding-right: 30px;
-  border: none;
-  outline: none;
-  font-size: 19.8px;
-  margin-top: 45px;
-  text-decoration: none;
-  /* width: 120px; */
 }
 
 /* Offer styles */
@@ -138,87 +80,7 @@ body {
   background-color: rgb(42, 31, 31);
 }
 
-.service-heading {
-  font-size: 50px;
-  color: white;
-}
-
-.list-item {
-  display: inline;
-  padding: 20px;
-  padding-bottom: 10px;
-  font-size: 26px;
-  text-align: center;
-  margin-top: 15px;
-}
-
-.list-item button {
-  border: none;
-  background-color: rgb(42, 31, 31);
-  color: white;
-}
-
-.service-active {
-  border-bottom: 3px solid orangered;
-}
-
-.foodtype-heading {
-  margin-top: 30px;
-  font-weight: 400;
-}
-
-.foodtype-p {
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 30px;
-  margin-top: 15px;
-}
-
-.fast-foods {
-  background-color: orangered;
-  color: white;
-  /* border-radius: 16px; */
-  height: 640px;
-}
-
-.food-details {
-  padding: 29px;
-}
-
 /* Locals Styles */
-.locals-section-bg-color {
-  background-color: black;
-  color: white;
-  padding: 50px;
-  padding-top: 50px;
-}
-
-.locals-heading {
-  font-size: 68px;
-  font-weight: 500;
-  /* width: 500px; */
-  color: white;
-}
-
-.locals-padding {
-  margin-top: 110px;
-}
-
-.locals-p {
-  font-size: 30px;
-  color: white;
-  margin-bottom: 50px;
-}
-
-.order-btn {
-  width: 150px;
-}
-
-.drinks-section-bg-color {
-  background-color: orangered;
-  padding: 50px;
-  /* margin-top: 50px; */
-}
 
 .drinks-order-btn {
   background-color: black;
@@ -232,75 +94,6 @@ body {
   margin-top: 45px;
   text-decoration: none;
   /* width: 120px; */
-}
-
-/* Our kitchen styles */
-
-.ourkitchenheading {
-  font-size: 35px;
-  font-weight: 400;
-  color: black;
-  margin-top: 20px;
-}
-
-.kitchen-padding {
-  padding-top: 40px;
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-bottom: 40px;
-}
-
-.kitchen-section {
-  background-color: white;
-  padding: 50px;
-}
-
-.ourkitchen-p {
-  font-size: 30px;
-  font-weight: 400;
-  color: black;
-  margin-top: 20px;
-}
-
-.img-padding {
-  padding-left: 300px;
-}
-
-.our-kitchen-nav-h {
-  font-size: 23px;
-  color: orangered;
-}
-
-.slide-arr {
-  width: 60px;
-  height: 60px;
-  font-size: 40px;
-  border: 2px solid white;
-  outline: none;
-  background-color: orangered;
-  border-radius: 50%;
-  text-align: center;
-  color: white;
-  font-weight: 500;
-  line-height: 1;
-  margin-left: 10px;
-}
-
-.navigation-padding {
-  padding-left: 50px;
-}
-
-.slide-arr-btn-parent {
-  margin-left: 400px;
-}
-
-.our-kitchen-nav-h {
-  font-size: 40px;
-  margin-top: 20px;
-  color: orangered;
-  font-family: "Nerko One", cursive;
-  font-weight: 400;
-  font-style: normal;
 }
 
 /* Our Images Styles */
@@ -456,24 +249,6 @@ body {
   padding-left: 15px;
 }
 
-.kitchen-intro {
-  padding: 20px;
-  padding-top: 120px;
-}
-
-.kitchenIntroHeading {
-  font-size: 25px;
-  color: #36454f;
-  font-weight: 500;
-  padding-bottom: 0px;
-  text-transform: uppercase;
-}
-
-.kitchenintroparagraph {
-  color: orangered;
-  font-size: 30px;
-}
-
 .section-margin {
   margin-top: 150px;
 }
@@ -488,72 +263,9 @@ body {
   padding-right: 100px;
 }
 
-.bg-color {
-  background-color: rgb(223, 222, 222);
-}
-
-.customerName {
-  color: #36454f;
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 30px;
-}
-
-.customer-review {
-  color: orangered;
-  font-size: 27px;
-}
-
 .environmentParent {
   padding: 30px;
   margin-top: 90px;
-}
-
-.ourEnvironmentHeading,
-.chef-heading {
-  color: #36454f;
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 30px;
-}
-
-.ourEnvironmentP,
-.chef-p {
-  font-size: 32px;
-  line-height: 42px;
-  color: orangered;
-}
-
-.custom-meal-heading {
-  color: orangered;
-  font-size: 38px;
-  font-weight: 500;
-}
-
-.custom-meal-p {
-  color: green;
-  font-weight: 400;
-  font-size: 30px;
-}
-
-.custom-meal-btn {
-  width: 210px;
-  padding: 13px;
-  font-size: 19px;
-  border: none;
-  outline: none;
-  color: white;
-  background-color: orangered;
-  margin-top: 10px;
-}
-
-.border-right {
-  border-right: 1px solid green;
-  padding-right: 30px;
-}
-
-.border-left {
-  padding-left: 50px;
 }
 
 .overlay {
@@ -568,32 +280,6 @@ body {
   align-items: center;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
-}
-
-.chef-card:hover .overlay {
-  opacity: 1;
-}
-
-.chef-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 10px;
-}
-
-.chef-info {
-  width: 90%;
-  font-size: 30px;
-}
-
-.chef-name {
-  font-size: 24px;
-  color: white;
-}
-
-.chef-post {
-  font-size: 20px;
-  text-transform: uppercase;
-  color: white;
 }
 
 /* Footer styles */
@@ -662,7 +348,7 @@ body {
 }
 
 .little-about-us {
-  font-size: 19px;
+  font-size: 18px;
   margin-top: 30px;
   line-height: 30px;
   padding: 10px;
@@ -670,104 +356,7 @@ body {
   color: rgb(227, 224, 224);
 }
 
-/* Gallery Image styles */
-
-.gallery-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(15, 15, 15, 0.65);
-}
-
-.gallery-brand {
-  font-size: 140px;
-  font-weight: bold;
-  text-align: center;
-  color: orangered;
-  font-family: "Qwitcher Grypen", cursive;
-  font-style: normal;
-}
-
-.gallery-caption {
-  position: absolute;
-  left: 0px;
-  top: 280px;
-  width: 100vw;
-  text-align: center;
-  /* color: white; */
-}
-
-.monument-heading {
-  font-size: 24px;
-  font-weight: 500;
-  color: orangered;
-}
-
-.monument-p {
-  color: orangered;
-  font-size: 19px;
-  font-weight: 370;
-  margin-top: 18px;
-}
-
-.monument-margin {
-  margin-top: 120px;
-}
-
-.reservationBtn,
-.menuBtn {
-  font-size: 17.5px;
-  border: 1px solid orangered;
-  outline: none;
-  background-color: #f5f5f5;
-  color: orangered;
-  padding: 20px;
-  padding-left: 23px;
-  padding-right: 23px;
-  text-decoration: none;
-}
-
-.reservationBtn:hover,
-.menuBtn:hover {
-  background-color: orangered;
-  color: white;
-  transition: all 0.5s;
-  text-decoration: none;
-}
-
-.reservationBtn {
-  display: block;
-  margin-top: 15px;
-  text-decoration: none;
-  width: 270px;
-}
-
 /* Menu page */
-
-select {
-  width: 100%;
-  margin-top: 40px;
-  margin: 40px auto;
-  height: 46px;
-  border-radius: 5px;
-  font-size: 18.5px;
-  font-weight: 400;
-  padding-left: 12px;
-}
-
-.menu-select {
-  padding: 10px 200px;
-}
-#food-select {
-  background-color: #f0f0f0;
-}
-.menu-padding {
-  padding: 30px;
-  padding-left: 80px;
-  padding-right: 80px;
-}
 
 .spinner-grow {
   width: 3rem;
@@ -775,20 +364,6 @@ select {
   background-color: orangered;
   margin-top: 50px;
   margin-bottom: 50px;
-}
-
-.cocktail-heading {
-  color: orangered;
-  margin-top: 50px;
-  font-weight: 400;
-  font-size: 25px;
-  margin-bottom: 15px;
-}
-
-.cocktail-p {
-  color: orangered;
-  font-weight: 350;
-  font-size: 19px;
 }
 
 .menu-page-btn {
@@ -808,75 +383,6 @@ select {
   transition: all 0.7s;
 }
 
-.menu-section {
-  margin-top: 50px;
-}
-
-/* Reservation page */
-.reservationTimebtn {
-  border: none;
-  outline: none;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  width: 200px;
-  background-color: grey;
-  border-radius: 6px;
-}
-
-.reservationTime {
-  margin-bottom: 0px;
-  font-size: 19.5px;
-  font-weight: 500;
-}
-
-.reservation {
-  margin-bottom: 0px;
-  font-size: 17px;
-  font-weight: 400;
-}
-
-.result-display {
-  color: black;
-  text-align: start;
-  margin-top: 40px;
-  font-size: 23px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 27px;
-  background-color: #f0f0f0;
-  font-weight: 300;
-}
-
-.result-display:hover {
-  border-color: #888;
-  transition: all 0.4s;
-}
-
-.selectLabel {
-  color: orangered;
-  margin-top: 30px;
-  font-size: 22px;
-  font-weight: 500;
-  margin-bottom: 13px;
-}
-
-.selected-result {
-  color: orangered;
-}
-
-.submit-reservation-btn {
-  margin-top: 80px;
-  border: none;
-  outline: none;
-  padding: 15px;
-  font-size: 20px;
-  width: 180px;
-  background-color: orangered;
-  color: white;
-}
-
 /* Order page */
 .item {
   width: 300px;
@@ -888,14 +394,6 @@ select {
 .item-heading {
   font-size: 25px;
   font-weight: 450;
-}
-
-.item-container {
-  background-color: white;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Login page */
@@ -1109,12 +607,6 @@ select {
   font-weight: 400;
 }
 
-.price {
-  color: green;
-  font-size: 20px;
-  margin: 5px 0px;
-}
-
 .item-remove {
   border: none;
   outline: none;
@@ -1124,32 +616,9 @@ select {
   cursor: pointer;
 }
 
-.item-name {
-  color: black;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.item-img {
-  border-radius: 5px;
-  margin-right: 20px;
-}
-
-.item-details {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
 .cart-detials {
   display: flex;
   gap: 20px;
-}
-
-.item-background-color {
-  background-color: white;
-  padding: 50px;
-  border-radius: 10px;
 }
 
 /* Check out page */
@@ -1372,18 +841,4 @@ body {
   border-radius: 5px;
   cursor: pointer;
   background-color: green;
-}
-
-.sort-btn {
-  border: none;
-  outline: none;
-  padding: 15px;
-  border-radius: 50px;
-  width: 130px;
-  margin-left: 15px;
-}
-
-.sort-btn:hover {
-  /* background-color: grey; */
-  transition: 0.5s all;
 }

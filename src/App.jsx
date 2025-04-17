@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./styles/App.css";
+import "./styles/ResponsiveStyle.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 
@@ -10,15 +11,15 @@ import ProtectedRoute from "./protectedRoute/ProtectedRoute";
 
 // User Components
 import Navbar from "./components/Navbar";
-import Index from "./pages/Index";
-import KitchenPage from "./pages/KitchenPage";
-import GalleryPage from "./pages/GalleryPage";
+import Index from "./pages/homePage/Index";
+import KitchenPage from "./pages/aboutusPage/KitchenPage";
+import GalleryPage from "./pages/galleryPage/GalleryPage";
 import EventPage from "./pages/EventPage";
 import OrderPage from "./pages/OrderPage";
 import Signin from "./components/Authentication/Signin";
 import Signup from "./components/Authentication/Signup";
-import MenuPage from "./pages/MenuPage";
-import Cart from "./pages/Cart";
+import MenuPage from "./pages/menuPage/MenuPage";
+import Cart from "./pages/cartPage/Cart";
 import Checkout from "./pages/Checkout";
 import ReservationPage from "./pages/Reservation/UserReservations";
 import PresentOrders from "./pages/userProfile/user_orders/PresentOrders";

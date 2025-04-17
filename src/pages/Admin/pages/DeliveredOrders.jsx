@@ -4,6 +4,7 @@ import supabase from "../../../supabaseClient";
 import Spinner from "../../../components/Spinner";
 import Footer from "../../../components/Footer";
 import { toast, ToastContainer } from "react-toastify";
+import "./style.css";
 
 export default function DeliveredOrders() {
   const [deliveredOrders, setDeliveredOrders] = useState([]);

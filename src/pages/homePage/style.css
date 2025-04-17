@@ -1,0 +1,375 @@
+/* Carousel styles */
+
+.carousel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 15, 15, 0.8);
+}
+
+/* .carousel-section {
+  background-color: rgb(42, 31, 31);
+  padding-left: 120px;
+  padding-right: 120px;
+} */
+
+.carousel-caption {
+  position: absolute;
+  left: 70px;
+  top: 190px;
+  width: 100vw;
+  text-align: start;
+  color: white;
+}
+
+.carousel-heading {
+  font-size: 60px;
+  text-align: start;
+}
+
+.carousel-description {
+  font-size: 32px;
+  text-align: start;
+  width: 50%;
+  line-height: 47px;
+  margin-top: 15px;
+}
+
+.highlight-carousel {
+  color: orangered;
+}
+
+.reservation-btn,
+.order-btn {
+  background-color: orangered;
+  color: white;
+  padding: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: none;
+  outline: none;
+  font-size: 19.8px;
+  margin-top: 45px;
+  text-decoration: none;
+  /* width: 120px; */
+}
+
+/* Fast food syles */
+
+.list-item {
+  display: inline;
+  padding: 20px;
+  padding-bottom: 10px;
+  font-size: 26px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.list-item button {
+  border: none;
+  background-color: rgb(42, 31, 31);
+  color: white;
+}
+
+.service-active {
+  border-bottom: 3px solid orangered;
+}
+
+.service-heading {
+  font-size: 50px;
+  color: white;
+}
+
+.foodtype-heading {
+  margin-top: 30px;
+  font-weight: 400;
+}
+
+.foodtype-p {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 30px;
+  margin-top: 15px;
+}
+
+.fast-foods {
+  background-color: orangered;
+  color: white;
+  /* border-radius: 16px; */
+  height: 640px;
+}
+
+.food-details {
+  padding: 29px;
+}
+
+/* Locals styles */
+
+.locals-padding {
+  margin-top: 110px;
+}
+
+.explore-locals {
+  margin-top: 15px;
+}
+
+.locals-section-bg-color {
+  background-color: black;
+  color: white;
+  padding: 50px;
+  padding-top: 50px;
+}
+
+.locals-heading {
+  font-size: 68px;
+  font-weight: 500;
+  /* width: 500px; */
+  color: white;
+}
+
+.locals-p {
+  font-size: 30px;
+  color: white;
+  margin-bottom: 50px;
+}
+
+.order-btn {
+  width: 150px;
+}
+
+.drinks-section-bg-color {
+  background-color: orangered;
+  padding: 50px;
+  padding: 20px;
+  padding-top: 10px;
+  padding: 50px;
+  padding-top: 50px;
+}
+
+.drinks-order-btn {
+  background-color: black;
+  color: white;
+  padding: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: none;
+  outline: none;
+  font-size: 19.8px;
+  margin-top: 45px;
+  text-decoration: none;
+  /* width: 120px; */
+}
+
+/* Our kitchen styles */
+
+.navigation-padding {
+  padding-left: 50px;
+}
+
+.our-kitchen-nav-h {
+  font-size: 40px;
+  margin-top: 20px;
+  color: orangered;
+  font-family: "Nerko One", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.slide-arr-btn-parent {
+  margin-left: 400px;
+}
+
+.slide-arr {
+  width: 60px;
+  height: 60px;
+  font-size: 40px;
+  border: 2px solid white;
+  outline: none;
+  background-color: orangered;
+  border-radius: 50%;
+  text-align: center;
+  color: white;
+  font-weight: 500;
+  line-height: 1;
+  margin-left: 10px;
+}
+
+.kitchen-padding {
+  padding-top: 40px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 40px;
+}
+
+.ourkitchenheading {
+  font-size: 35px;
+  font-weight: 400;
+  color: black;
+  margin-top: 20px;
+}
+
+.ourkitchen-p {
+  font-size: 30px;
+  font-weight: 400;
+  color: black;
+  margin-top: 20px;
+}
+
+.img-padding {
+  padding-left: 300px;
+}
+
+@media only screen and (max-width: 786px) {
+  /* Carousel Section */
+  .carousel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 15, 15, 0.8);
+  }
+
+  .carousel-section {
+    background-color: rgb(42, 31, 31);
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .carousel-caption {
+    position: absolute;
+    left: 20px;
+    top: 40px;
+    width: 100vw;
+    text-align: start;
+    color: white;
+  }
+
+  .carousel-heading {
+    font-size: 40px;
+    text-align: start;
+  }
+
+  .carousel-description {
+    font-size: 20px;
+    text-align: start;
+    width: 80%;
+    line-height: 35px;
+    margin-top: 15px;
+  }
+
+  .reservation-btn,
+  .order-btn {
+    background-color: orangered;
+    color: white;
+    padding: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border: none;
+    outline: none;
+    font-size: 19.8px;
+    margin-top: 25px;
+    text-decoration: none;
+  }
+
+  .list-item {
+    display: inline;
+    padding: 20px;
+    padding-bottom: 10px;
+    font-size: 17px;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  .list-item button {
+    border: none;
+    background-color: rgb(42, 31, 31);
+    color: white;
+  }
+
+  .service-heading {
+    font-size: 26px;
+    color: white;
+  }
+
+  .explore-locals {
+    margin-top: 15px;
+  }
+
+  .locals-section-bg-color {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    padding-top: 10px;
+  }
+
+  .locals-padding {
+    margin-top: 70px;
+    margin-bottom: 40px;
+  }
+
+  .locals-heading {
+    font-size: 50px;
+    font-weight: 500;
+    color: white;
+  }
+
+  .locals-p {
+    font-size: 22px;
+    color: white;
+    margin-bottom: 50px;
+    margin-top: 15px;
+  }
+
+  .drinks-section-bg-color {
+    background-color: orangered;
+    padding: 50px;
+    padding: 20px;
+    padding-top: 10px;
+  }
+
+  .navigation-padding {
+    padding-left: 20px;
+  }
+
+  .our-kitchen-nav-h {
+    font-size: 28px;
+    margin-top: 20px;
+    color: orangered;
+    font-family: "Nerko One", cursive;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .slide-arr-btn-parent {
+    margin-left: 20px;
+  }
+
+  .kitchen-padding {
+    padding-top: 40px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 40px;
+  }
+
+  .ourkitchenheading {
+    font-size: 30px;
+    font-weight: 500;
+    color: black;
+    margin-top: 20px;
+  }
+
+  .ourkitchen-p {
+    font-size: 23px;
+    font-weight: 400;
+    color: black;
+    margin-top: 20px;
+  }
+
+  .img-padding {
+    display: none;
+  }
+}

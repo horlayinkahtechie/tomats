@@ -152,7 +152,11 @@ function Navbar({ foodFetch, clearSearchedItem }) {
 
             <li className="nav-item">
               <Link className="nav-link text-white" to="/cart">
-                <button type="button" className="btn position-relative">
+                <button
+                  type="button"
+                  className="btn position-relative"
+                  style={{ padding: "0px" }}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="30"

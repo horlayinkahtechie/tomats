@@ -1,4 +1,4 @@
-import fruitImg3 from "../Images/localfoodImg.jpg";
+import fruitImg3 from "../../Images/localfoodImg.jpg";
 import { Link } from "react-router-dom";
 
 function LocalsSection() {
@@ -16,8 +16,13 @@ function LocalsSection() {
           Order now
         </Link>
       </div>
-      <div className="col-md-6 mt-4">
-        <img src={fruitImg3} className="img-fluid" alt="Local food" />
+      <div className="col-md-6 mt-4 mb-3">
+        <img
+          src={fruitImg3}
+          className="img-fluid"
+          loading="lazy"
+          alt="Local food"
+        />
       </div>
     </div>
   );

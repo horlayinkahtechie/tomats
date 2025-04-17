@@ -1,7 +1,7 @@
 import { useState } from "react";
-import kitchenImg from "../Images/kitchenImg1.jpg";
-import restaurantImg from "../Images/restaurantImg2.jpg";
-import customerSatisfactionImg from "../Images/customerSatisfactionImg.jpg";
+import kitchenImg from "../../Images/kitchenImg1.jpg";
+import restaurantImg from "../../Images/restaurantImg2.jpg";
+import customerSatisfactionImg from "../../Images/customerSatisfactionImg.jpg";
 
 function Ourkitchensection() {
   const [nextKitchenSection, setNextKitchenSection] = useState(1);
@@ -26,7 +26,7 @@ function Ourkitchensection() {
         <div className="col-md-6">
           <p className="our-kitchen-nav-h">A REASON TO IMAGINE.</p>
         </div>
-        <div className="col-md-4 slide-arr-btn-parent">
+        <div className="col-md-6 slide-arr-btn-parent">
           <button type="button" className="slide-arr" onClick={prevKitchen}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -64,12 +64,17 @@ function Ourkitchensection() {
             </p>
           </div>
           <div className="col-md-8 img-padding">
-            <img src={kitchenImg} alt="Kitchen Image" className="img-fluid" />
+            <img
+              src={kitchenImg}
+              alt="Kitchen Image"
+              loading="lazy"
+              className="img-fluid"
+            />
           </div>
         </div>
       )}
       {nextKitchenSection === 2 && (
-        <div className="row p-5">
+        <div className="row kitchen-padding">
           <div className="col-md-4">
             <h3 className="ourkitchenheading">OUR DINING</h3>
             <p className="ourkitchen-p">
@@ -83,13 +88,14 @@ function Ourkitchensection() {
               src={restaurantImg}
               alt="Kitchen Image"
               className="img-fluid"
+              loading="lazy"
             />
           </div>
         </div>
       )}
 
       {nextKitchenSection === 3 && (
-        <div className="row p-5">
+        <div className="row kitchen-padding">
           <div className="col-md-4">
             <h3 className="ourkitchenheading">CUSTOMER SATISFACTION</h3>
             <p className="ourkitchen-p">
@@ -103,6 +109,7 @@ function Ourkitchensection() {
               src={customerSatisfactionImg}
               alt="Kitchen Image"
               className="img-fluid"
+              loading="lazy"
             />
           </div>
         </div>
