@@ -1,63 +1,3 @@
-/* Carousel styles */
-
-.carousel-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(15, 15, 15, 0.8);
-}
-
-/* .carousel-section {
-  background-color: rgb(42, 31, 31);
-  padding-left: 120px;
-  padding-right: 120px;
-} */
-
-.carousel-caption {
-  position: absolute;
-  left: 70px;
-  top: 190px;
-  width: 100vw;
-  text-align: start;
-  color: white;
-}
-
-.carousel-heading {
-  font-size: 60px;
-  text-align: start;
-}
-
-.carousel-description {
-  font-size: 32px;
-  text-align: start;
-  width: 50%;
-  line-height: 47px;
-  margin-top: 15px;
-}
-
-.highlight-carousel {
-  color: orangered;
-}
-
-.reservation-btn,
-.order-btn {
-  background-color: orangered;
-  color: white;
-  padding: 20px;
-  padding-left: 30px;
-  padding-right: 30px;
-  border: none;
-  outline: none;
-  font-size: 19.8px;
-  margin-top: 45px;
-  text-decoration: none;
-  /* width: 120px; */
-}
-
-/* Fast food syles */
-
 .list-item {
   display: inline;
   padding: 20px;
@@ -221,155 +161,70 @@
   padding-left: 300px;
 }
 
-@media only screen and (max-width: 786px) {
-  /* Carousel Section */
-  .carousel-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(15, 15, 15, 0.8);
+/* Carousel Styles */
+.carousel-item {
+  height: 80vh;
+}
+
+.carousel-caption-heading {
+  font-size: 30px;
+  font-weight: 570;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.carousel-caption-p {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.carousel-caption-link {
+  padding: 15px;
+  font-size: 19px;
+  width: 190px;
+  font-weight: 500;
+}
+
+.carousel-caption {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+  .carousel-item {
+    height: 50vh;
   }
 
-  .carousel-section {
-    background-color: rgb(42, 31, 31);
-    padding-left: 0px;
-    padding-right: 0px;
+  .carousel-inner {
+    height: 50vh;
+  }
+
+  .carousel-img {
+    height: 50vh;
   }
 
   .carousel-caption {
-    position: absolute;
-    left: 20px;
-    top: 40px;
-    width: 100vw;
-    text-align: start;
-    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0;
   }
 
-  .carousel-heading {
-    font-size: 40px;
-    text-align: start;
-  }
-
-  .carousel-description {
-    font-size: 20px;
-    text-align: start;
-    width: 80%;
-    line-height: 35px;
-    margin-top: 15px;
-  }
-
-  .reservation-btn,
-  .order-btn {
-    background-color: orangered;
-    color: white;
-    padding: 20px;
-    padding-left: 30px;
-    padding-right: 30px;
-    border: none;
-    outline: none;
-    font-size: 19.8px;
-    margin-top: 25px;
-    text-decoration: none;
-  }
-
-  .list-item {
-    display: inline;
-    padding: 20px;
-    padding-bottom: 10px;
-    font-size: 17px;
-    font-weight: 500;
-    text-align: center;
-    margin-top: 15px;
-  }
-
-  .list-item button {
-    border: none;
-    background-color: rgb(42, 31, 31);
-    color: white;
-  }
-
-  .service-heading {
-    font-size: 26px;
-    color: white;
-  }
-
-  .explore-locals {
-    margin-top: 15px;
-  }
-
-  .locals-section-bg-color {
-    background-color: black;
-    color: white;
-    padding: 20px;
-    padding-top: 10px;
-  }
-
-  .locals-padding {
-    margin-top: 70px;
-    margin-bottom: 40px;
-  }
-
-  .locals-heading {
-    font-size: 50px;
-    font-weight: 500;
-    color: white;
-  }
-
-  .locals-p {
-    font-size: 22px;
-    color: white;
-    margin-bottom: 50px;
-    margin-top: 15px;
-  }
-
-  .drinks-section-bg-color {
-    background-color: orangered;
-    padding: 50px;
-    padding: 20px;
-    padding-top: 10px;
-  }
-
-  .navigation-padding {
-    padding-left: 20px;
-  }
-
-  .our-kitchen-nav-h {
-    font-size: 28px;
-    margin-top: 20px;
-    color: orangered;
-    font-family: "Nerko One", cursive;
-    font-weight: 400;
-    font-style: normal;
-  }
-
-  .slide-arr-btn-parent {
-    margin-left: 20px;
-  }
-
-  .kitchen-padding {
-    padding-top: 40px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 40px;
-  }
-
-  .ourkitchenheading {
+  .carousel-caption-heading {
     font-size: 30px;
+    font-weight: 570;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .carousel-caption-p {
+    font-size: 20px;
     font-weight: 500;
-    color: black;
-    margin-top: 20px;
   }
 
-  .ourkitchen-p {
-    font-size: 23px;
-    font-weight: 400;
-    color: black;
-    margin-top: 20px;
-  }
-
-  .img-padding {
-    display: none;
+  .carousel-caption-link {
+    padding: 15px;
+    font-size: 19px;
+    width: 190px;
+    font-weight: 500;
   }
 }

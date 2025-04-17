@@ -1,24 +1,76 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import "./reservationStyle.css";
 import supabase from "../../supabaseClient";
 import { ToastContainer, toast } from "react-toastify";
-import "./reservationStyle.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import emailjs from "emailjs-com";
 
 const ReservationSteps = () => {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [phoneNo, setPhoneNo] = useState(null);
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
   const [reservationDate, setReservationDate] = useState(null);
-  const [reservationTime, setReservationTime] = useState(null);
-  const [noOfGuests, setNoOfGuests] = useState(null);
-  const [noOfReservedSeat, setNoOfReservedSeat] = useState(null);
-  const [specialRequests, setSpecialRequests] = useState(null);
+  const [reservationTime, setReservationTime] = useState("");
+  const [noOfGuests, setNoOfGuests] = useState("");
+  const [noOfReservedSeat, setNoOfReservedSeat] = useState("");
+  const [specialRequests, setSpecialRequests] = useState("");
+
+  const [reservedSlots, setReservedSlots] = useState([]);
+
+  const timeSlots = ["12:00", "14:00", "16:00", "18:00", "20:00"];
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    return d.toISOString().split("T")[0]; // yyyy-mm-dd
+  };
+
+  const cleanTime = (time) => {
+    return time?.slice(0, 5);
+  };
+
+  const isSlotTaken = (date, time) => {
+    const selectedDate = formatDate(date);
+    const cleanedTime = cleanTime(time);
+    const taken = reservedSlots.some(
+      (slot) =>
+        slot.reservationDate === selectedDate &&
+        cleanTime(slot.reservationTime) === cleanedTime
+    );
+    return taken;
+  };
+
+  const availableTimes = useMemo(() => {
+    if (!reservationDate) return timeSlots;
+    return timeSlots.filter((time) => !isSlotTaken(reservationDate, time));
+  }, [reservationDate, reservedSlots]);
+
+  const fetchReservedSlots = async () => {
+    const { data, error } = await supabase
+      .from("reservation")
+      .select("reservationDate, reservationTime")
+      .eq("status", "confirmed");
+
+    if (error) {
+      console.error("Error fetching reserved slots:", error.message);
+    } else {
+      const cleaned = data.map((slot) => ({
+        reservationDate: formatDate(slot.reservationDate),
+        reservationTime: cleanTime(slot.reservationTime),
+      }));
+      setReservedSlots(cleaned);
+    }
+  };
+
+  useEffect(() => {
+    fetchReservedSlots();
+  }, []);
 
   const totalSteps = 3;
-
   const nextStep = () => setStep((prev) => Math.min(prev + 1, totalSteps));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
@@ -41,11 +93,15 @@ const ReservationSteps = () => {
       return;
     }
 
-    // Get the logged-in user
     const { data: user, error: userError } = await supabase.auth.getUser();
     if (userError || !user?.user) {
-      console.error("No user logged in:", userError);
       toast.error("You must be logged in to reserve a seat!");
+      setLoading(false);
+      return;
+    }
+
+    if (isSlotTaken(reservationDate, reservationTime)) {
+      toast.error("Time slot no longer available.");
       setLoading(false);
       return;
     }
@@ -55,83 +111,97 @@ const ReservationSteps = () => {
       lastName,
       email,
       phoneNo,
-      reservationDate,
+      reservationDate: formatDate(reservationDate),
       reservationTime,
       noOfGuests,
       noOfReservedSeat,
       specialRequests,
+      status: "confirmed", // You can change this if you want to allow pending status
     };
 
-    try {
-      const { error } = await supabase
-        .from("reservation")
-        .insert(reservationData);
+    const { error } = await supabase
+      .from("reservation")
+      .insert(reservationData);
 
-      if (error) {
-        console.error("Error reserving your seat:", error.message);
-        toast.error("There was an error reserving your seat!");
-      } else {
-        setFirstName(null);
-        setLastName(null);
-        setEmail(null);
-        setReservationDate(null);
-        setPhoneNo(null);
-        setReservationTime(null);
-        setNoOfGuests(null);
-        setNoOfReservedSeat(null);
-        setSpecialRequests(null);
-        toast.success(
-          "Your seat has been reserved! Check your email for confirmation."
+    if (error) {
+      toast.error("Error reserving your seat!");
+    } else {
+      toast.success(
+        "Reservation successful! Check your email for confirmation!"
+      );
+
+      // Send confirmation email
+      emailjs
+        .send(
+          "service_dt4lfep", //Service ID
+          "template_08k3kgt", //Template ID
+          {
+            firstName,
+            lastName,
+            email,
+            reservationDate: formatDate(reservationDate),
+            reservationTime,
+            noOfGuests,
+            noOfReservedSeat,
+            specialRequests,
+          },
+          "zLcqtoGgeFglmGnFb" // (user ID)
+        )
+        .then(
+          (result) => {
+            console.log("Email sent successfully!", result.text);
+          },
+          (error) => {
+            console.error("Failed to send email", error);
+          }
         );
-      }
-    } catch (err) {
-      console.error("Unexpected error occurred:", err);
-      toast.error("Something went wrong, please try again.");
-    } finally {
-      setLoading(false);
+
+      // Clear fields
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPhoneNo("");
+      setReservationDate(null);
+      setReservationTime("");
+      setNoOfGuests("");
+      setNoOfReservedSeat("");
+      setSpecialRequests("");
+      fetchReservedSlots(); // Refresh taken slots
     }
+    setLoading(false);
   };
 
   const formInputs = (e) => {
     const { name, value } = e.target;
-
-    if (name === "noOfGuests") {
-      const guests = parseInt(value) || 0; // Convert to number, default to 0 if NaN
-      setNoOfGuests(guests);
-
-      if (guests < 3) {
-        setNoOfReservedSeat(2);
-      } else {
-        setNoOfReservedSeat(guests); // Automatically set seats to guest count
-      }
-    } else if (name === "noOfReservedSeat") {
-      setNoOfReservedSeat(parseInt(value) || 0); // Ensure it's a number
-    } else {
-      switch (name) {
-        case "firstName":
-          setFirstName(value);
-          break;
-        case "lastName":
-          setLastName(value);
-          break;
-        case "email":
-          setEmail(value);
-          break;
-        case "phoneNo":
-          setPhoneNo(value);
-          break;
-        case "reservationDate":
-          setReservationDate(value);
-          break;
-        case "reservationTime":
-          setReservationTime(value);
-          break;
-        case "specialRequests":
-          setSpecialRequests(value);
-          break;
-        default:
-          break;
-      }
+    switch (name) {
+      case "firstName":
+        setFirstName(value);
+        break;
+      case "lastName":
+        setLastName(value);
+        break;
+      case "email":
+        setEmail(value);
+        break;
+      case "phoneNo":
+        setPhoneNo(value);
+        break;
+      case "reservationTime":
+        setReservationTime(value);
+        break;
+      case "specialRequests":
+        setSpecialRequests(value);
+        break;
+      case "noOfGuests":
+        const guests = parseInt(value) || 0;
+        setNoOfGuests(guests);
+        setNoOfReservedSeat(guests < 3 ? 2 : guests);
+        break;
+      case "noOfReservedSeat":
+        setNoOfReservedSeat(parseInt(value) || 0);
+        break;
+      default:
+        break;
     }
   };
 
@@ -180,9 +250,8 @@ const ReservationSteps = () => {
         })}
       </div>
 
-      {/* Step Content */}
-      <div className="">
-        <form action="">
+      <div>
+        <form onSubmit={handleSubmit}>
           {step === 1 && (
             <div className="row">
               <div className="col-md-6">
@@ -190,11 +259,10 @@ const ReservationSteps = () => {
                 <input
                   type="text"
                   name="firstName"
-                  placeholder="Your firstname"
                   required
                   className="form-control reservation-input"
                   onChange={formInputs}
-                  value={firstName || ""}
+                  value={firstName}
                 />
               </div>
               <div className="col-md-6">
@@ -203,10 +271,9 @@ const ReservationSteps = () => {
                   type="text"
                   name="lastName"
                   required
-                  placeholder="Your Lastname"
                   className="form-control reservation-input"
                   onChange={formInputs}
-                  value={lastName || ""}
+                  value={lastName}
                 />
               </div>
               <div className="col-md-6">
@@ -215,22 +282,20 @@ const ReservationSteps = () => {
                   type="email"
                   name="email"
                   required
-                  placeholder="example@gmail.com"
                   className="form-control reservation-input"
                   onChange={formInputs}
-                  value={email || ""}
+                  value={email}
                 />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Phone number</label>
                 <input
-                  type="number"
+                  type="tel"
                   name="phoneNo"
                   required
-                  placeholder="Your Phone number"
                   className="form-control reservation-input"
                   onChange={formInputs}
-                  value={phoneNo || ""}
+                  value={phoneNo}
                 />
               </div>
             </div>
@@ -239,27 +304,36 @@ const ReservationSteps = () => {
           {step === 2 && (
             <>
               <label className="form-label">Reservation Date</label>
-              <input
-                type="date"
-                name="reservationDate"
-                required
-                className="form-control reservation-input"
-                style={{ width: "100%" }}
-                onChange={formInputs}
-                value={reservationDate || ""}
+              <DatePicker
+                selected={reservationDate}
+                onChange={(date) => setReservationDate(date)}
+                minDate={new Date()}
+                dateFormat="yyyy-MM-dd"
+                className="form-control"
               />
+
               <label className="form-label mt-3">Time</label>
-              <input
-                type="time"
-                required
+              <select
                 name="reservationTime"
-                className="form-control reservation-input"
-                style={{ width: "100%" }}
+                className="form-control"
+                value={reservationTime}
                 onChange={formInputs}
-                value={reservationTime || ""}
-              />
+              >
+                <option value="">Select Time</option>
+                {timeSlots.map((time) => (
+                  <option
+                    key={time}
+                    value={time}
+                    disabled={!availableTimes.includes(time)}
+                  >
+                    {time}{" "}
+                    {!availableTimes.includes(time) ? "(Unavailable)" : ""}
+                  </option>
+                ))}
+              </select>
             </>
           )}
+
           {step === 3 && (
             <>
               <label className="form-label">Number of Guests</label>
@@ -268,59 +342,60 @@ const ReservationSteps = () => {
                 name="noOfGuests"
                 required
                 className="form-control reservation-input"
-                style={{ width: "100%" }}
                 onChange={formInputs}
-                value={noOfGuests || ""}
+                value={noOfGuests}
               />
 
-              <label className="form-label">Number seats to be reserved</label>
+              <label className="form-label">
+                Number of seats to be reserved
+              </label>
               <input
                 type="number"
                 name="noOfReservedSeat"
                 required
                 className="form-control reservation-input"
-                style={{ width: "100%" }}
                 onChange={formInputs}
-                value={noOfReservedSeat || ""}
+                value={noOfReservedSeat}
               />
 
               <label className="form-label">Special Requests</label>
               <textarea
                 className="form-control"
                 name="specialRequests"
-                placeholder="I want a reservation for a birthday party and birthday shoot..."
+                placeholder="e.g. Birthday setup..."
                 rows="3"
                 onChange={formInputs}
-                value={specialRequests || ""}
+                value={specialRequests}
               ></textarea>
             </>
           )}
-        </form>
-      </div>
 
-      {/* Navigation Buttons */}
-      <div className="d-flex justify-content-between mt-5">
-        <button
-          className="btn btn-primary"
-          onClick={prevStep}
-          disabled={step === 1}
-          style={{ width: "180px", fontSize: "19px", height: "45px" }}
-        >
-          Previous
-        </button>
-        <button
-          type={step === totalSteps ? "submit" : "button"}
-          className="btn btn-outline-primary"
-          disabled={loading}
-          onClick={step === totalSteps ? handleSubmit : nextStep}
-          style={{ width: "180px", fontSize: "19px", height: "45px" }}
-        >
-          {loading
-            ? "Reserving..."
-            : step === totalSteps
-            ? "Reserve a seat"
-            : "Next"}
-        </button>
+          {/* Navigation Buttons */}
+          <div className="d-flex justify-content-between mt-5">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={prevStep}
+              disabled={step === 1}
+              style={{ width: "180px", fontSize: "19px", height: "45px" }}
+            >
+              Previous
+            </button>
+            <button
+              type={step === totalSteps ? "submit" : "button"}
+              className="btn btn-outline-primary"
+              disabled={loading}
+              onClick={step === totalSteps ? handleSubmit : nextStep}
+              style={{ width: "180px", fontSize: "19px", height: "45px" }}
+            >
+              {loading
+                ? "Reserving..."
+                : step === totalSteps
+                ? "Reserve a seat"
+                : "Next"}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -88,19 +88,6 @@ function Sidebar() {
             Insert product
           </Link>
         </li>
-        <li>
-          <Link
-            style={{ width: "250px" }}
-            to="#"
-            className={`nav-link ${
-              location.pathname === "/settings"
-                ? "active bg-primary"
-                : "text-white"
-            }`}
-          >
-            Settings
-          </Link>
-        </li>
       </ul>
       <hr />
       <button

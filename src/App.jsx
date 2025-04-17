@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import "./styles/App.css";
 import "./styles/ResponsiveStyle.css";
+
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import supabase from "./supabaseClient";
@@ -24,6 +27,7 @@ import Checkout from "./pages/Checkout";
 import ReservationPage from "./pages/Reservation/UserReservations";
 import PresentOrders from "./pages/userProfile/user_orders/PresentOrders";
 import PastOrders from "./pages/userProfile/user_orders/PastOrders";
+import Reservation from "./pages/userProfile/user_orders/Reservations";
 
 // Admin Components
 import AdminNavbar from "./pages/Admin/components/Navbar";
@@ -212,17 +216,14 @@ function App() {
                 <Route path="*" element={<Index />} />
               </>
             )}
-
             <Route path="/admin/login" element={<AdminSignin />} />
             <Route path="/Auth/login" element={<Signin />} />
-
             <Route path="/About" element={<KitchenPage />} />
             <Route path="/Gallery" element={<GalleryPage />} />
             <Route path="/Event" element={<EventPage />} />
             <Route path="/Order" element={<OrderPage />} />
             <Route path="/Auth/Signup" element={<Signup />} />
             <Route path="/Menu" element={<MenuPage />} />
-
             {/* User Protected Routes */}
             <Route
               path="/cart"
@@ -249,6 +250,14 @@ function App() {
               }
             />
             <Route
+              path="/user/reservations"
+              element={
+                <ProtectedRoute user={user}>
+                  <Reservation />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/checkout/payment"
               element={
                 <ProtectedRoute user={user}>
@@ -264,9 +273,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
             {/* Admin Protected Routes */}
-
             <Route
               path="/admin/reservations"
               element={
@@ -275,6 +282,15 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/admin/confirmed-reservation"
+              element={
+                <ProtectedRoute user={user} role={role} requiredRole="admin">
+                  <Reservations />
+                </ProtectedRoute>
+              }
+            />
+
             <Route
               path="/admin/orders"
               element={

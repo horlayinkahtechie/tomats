@@ -40,10 +40,10 @@ function Sidebar() {
         </li>
         <li>
           <Link
-            to="/reservations"
+            to="/user/reservations"
             style={{ width: "250px" }}
             className={`nav-link ${
-              location.pathname === "/reservations"
+              location.pathname === "/user/reservations"
                 ? "active bg-primary"
                 : "text-white"
             }`}

@@ -11,6 +11,7 @@ function Overview() {
   const [totalPrice, setTotalPrice] = useState();
   const [deliveredOrders, setDeliveredOrders] = useState([]);
   const [canceledOrders, setCanceledOrders] = useState([]);
+  const [userReservations, setUserReservations] = useState([]);
 
   const navigate = useNavigate();
 
@@ -158,6 +159,39 @@ function Overview() {
     };
 
     fetchCanceledOrders();
+  }, []);
+
+  // User Reservations
+  const fetchUsersReservations = async () => {
+    setLoading(true);
+
+    const { data: user, error: userError } = await supabase.auth.getUser();
+    if (userError || !user?.user) {
+      console.error("User not logged in:", userError);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // Fetch all user reservations
+      const { data: orders, error: ordersError } = await supabase
+        .from("reservation")
+        .select("*");
+
+      if (ordersError) {
+        console.error("Error fetching user reservations:", ordersError.message);
+      } else {
+        setUserReservations(orders || []);
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsersReservations();
   }, []);
 
   if (loading) {
@@ -325,7 +359,9 @@ function Overview() {
                   >
                     Reservations
                   </p>
-                  <p style={{ fontSize: "30px", fontWeight: "700" }}>10</p>
+                  <p style={{ fontSize: "30px", fontWeight: "700" }}>
+                    {userReservations.length}
+                  </p>
                 </div>
               </div>
               <div
@@ -413,7 +449,7 @@ function Overview() {
                           </div>
                           {canceledOrders.some(
                             (order) => order.order_id === item.order_id
-                          ) && ( // ✅ Fixed condition
+                          ) && (
                             <span
                               style={{
                                 fontSize: "22px",
