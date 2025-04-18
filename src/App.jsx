@@ -27,7 +27,7 @@ import Checkout from "./pages/Checkout";
 import ReservationPage from "./pages/Reservation/UserReservations";
 import PresentOrders from "./pages/userProfile/user_orders/PresentOrders";
 import PastOrders from "./pages/userProfile/user_orders/PastOrders";
-import Reservation from "./pages/userProfile/user_orders/Reservations";
+import Reservation from "./pages/userProfile/user_orders/Reservations";/
 
 // Admin Components
 import AdminNavbar from "./pages/Admin/components/Navbar";
